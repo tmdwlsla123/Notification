@@ -9,6 +9,9 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @SuppressLint("OverrideAbstract")
@@ -30,11 +33,16 @@ class MyNotificationListenerService: NotificationListenerService() {
             var notificatin: Notification = sbn.notification
             var extras: Bundle = notificatin.extras
             var title = extras.getString(Notification.EXTRA_TITLE)
-            var text = extras.getCharSequence(Notification.EXTRA_TEXT)
+            var text = extras.getCharSequence(Notification.EXTRA_TEXT).toString()
+            var date = SimpleDateFormat("HH:mm", Locale.KOREA).format(Calendar.getInstance().time)
             var subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
+
+
+
             val msgrcv = Intent("Msg")
             msgrcv.putExtra("title", title)
             msgrcv.putExtra("text", text)
+            msgrcv.putExtra("date", date)
 
             LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
 

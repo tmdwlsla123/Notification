@@ -6,34 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".LockScreenActivity"
     android:orientation="vertical"
-    android:gravity="bottom">
-    <LinearLayout
+    ><LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="12:00"
+        android:textSize="70sp"
+        android:id="@+id/date_time"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="1월 1일 일요일"
+        android:textSize="30sp"
+        android:id="@+id/date_day"/>
+</LinearLayout>
+<!--   알림 영역-->
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="12:00"
-            android:textSize="70sp"
-            android:id="@+id/date_time"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="1월 1일 일요일"
-            android:textSize="30sp"
-            android:id="@+id/date_day"/>
-    </LinearLayout>
-<!--   알림 영역-->
-    <include
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/notification" />
-
-<!--    //-->
+        android:layout_weight="1"
+        android:id="@+id/notifi_list"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,8 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="잠금해제"
-            android:layout_gravity="center"
+
             android:id="@+id/lock_open"/>
     </LinearLayout>
-
+<!--    //-->
 </LinearLayout>
