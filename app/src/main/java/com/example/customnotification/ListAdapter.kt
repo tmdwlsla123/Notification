@@ -6,68 +6,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
-class ListAdapter (val context: Context, val Allnotilist:  ArrayList<NotificationList>) : BaseAdapter(){
-    private val Context = context
-    private val mItem = notificationList
+class ListAdapter ( private val item:  ArrayList<AllNotificationList>) : RecyclerView.Adapter<Holder>(){
+//    private val Context = context
+//    private val mItem = Allnotilist
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view : View
-        val holder : ViewHolder
-        if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.notification, null)
-            holder = ViewHolder()
-            holder.title = view.findViewById(R.id.notification_title)
-            holder.text = view.findViewById(R.id.notification_text)
-            holder.date = view.findViewById(R.id.notification_date)
+//    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//        val title = itemView.findViewById<TextView>(R.id.list_title)
+//        val text = itemView.findViewById<TextView>(R.id.list_text)
+//        val date = itemView.findViewById<TextView>(R.id.list_date)
+//
+//
+//        fun bind (allNotificationList:  AllNotificationList) {
+//
+//            /* 나머지 TextView와 String 데이터를 연결한다. */
+//            title?.text = allNotificationList.title
+//            text?.text = allNotificationList.text
+//            date?.text = allNotificationList.date
+//        }
+//    }
 
-            view.tag = holder
-            /* convertView가 null, 즉 최초로 화면을 실행할 때에
-            ViewHolder에 각각의 TextView와 ImageView를 findVidwById로 설정.
-            마지막에 태그를 holder로 설정한다. */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
 
-        } else {
-            holder = convertView.tag as ViewHolder
-            view = convertView
-            /* 이미 만들어진 View가 있으므로, tag를 통해 불러와서 대체한다. */
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list, parent, false)
+        return Holder(view)
+    }
+
+    override fun getItemCount(): Int {
+
+        return item.size
+    }
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+
+
+        val item = item[position]
+
+        holder.apply {
+            bind(item)
         }
 
-        val list = notificationList[position]
-
-//        val resourceId = context.resources.getIdentifier(dog.photo, "drawable", context.packageName)
-        holder.title?.text = list.title
-        holder.text?.text = list.text
-        holder.date?.text = list.date
-        /* holder와 실제 데이터를 연결한다. null일 수 있으므로 변수에 '?'을 붙여 safe call 한다. */
-
-        return view
     }
+//    class mViewH(view: View) : RecyclerView.ViewHolder(view!!) {
+//        var title = view.findViewById<TextView>(R.id.list_title)
+//        var text = view.findViewById<TextView>(R.id.list_text)
+//        var date = view.findViewById<TextView>(R.id.list_date)
+//
+//
+//    }
 
-    override fun getItem(position: Int): Any {
-        return notificationList[position]
-    }
 
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-    override fun getCount(): Int {
-        return notificationList.size
-    }
-
-    private class ViewHolder {
-        var title : TextView? = null
-        var text: TextView? = null
-        var date: TextView? = null
-
-    }
-
-    fun setItem(items: java.util.ArrayList<NotificationList>) {
-        if (notificationList != null) {
-            notificationList.clear()
-            notificationList.addAll(items)
-            notifyDataSetChanged()
-        }
-    }
 }
