@@ -2,8 +2,9 @@ package com.example.customnotification
 
 import android.annotation.SuppressLint
 import android.app.Notification
-import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -11,11 +12,11 @@ import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @SuppressLint("OverrideAbstract")
 class MyNotificationListenerService: NotificationListenerService() {
+    var mContext: Context = this
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.e("kobbi","MyNotificationListener.onListenerConnected()")
@@ -45,6 +46,13 @@ class MyNotificationListenerService: NotificationListenerService() {
             msgrcv.putExtra("date", date)
 
             LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
+
+//            val pref = this.getPreferences(0)
+            val list = AppCache(mContext)
+            list.saveNotification(title,text,date)
+
+
+            Log.v("노티",list.getAll().toString())
 
 
 

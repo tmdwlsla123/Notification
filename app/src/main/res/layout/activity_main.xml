@@ -4,35 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="알림"></Button>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="4">
 
-    <Button
-        android:id="@+id/onBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="잠금화면 on"></Button>
+        <com.nex3z.flowlayout.FlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    <Button
-        android:id="@+id/offBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="잠금화면 off"></Button>
-    <Button
-        android:id="@+id/now_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="잠금화면 보이게"></Button>
-    <Button
-        android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="브로드캐스트"></Button>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알림"></Button>
 
+            <Button
+                android:id="@+id/onBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="잠금화면 on"></Button>
+
+            <Button
+                android:id="@+id/offBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="잠금화면 off"></Button>
+
+            <Button
+                android:id="@+id/now_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="잠금화면 보이게"></Button>
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="브로드캐스트"></Button>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/c"
+                android:text="노티피케이션 초기화"/>
+        </com.nex3z.flowlayout.FlowLayout>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/a"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="메인" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/b"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="노티리스트" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 </LinearLayout>

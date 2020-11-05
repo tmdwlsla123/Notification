@@ -73,7 +73,7 @@ class LockScreenActivity : AppCompatActivity() {
 
     }
 
-    private val onNotice: BroadcastReceiver = object : BroadcastReceiver() {
+    private var onNotice: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
 //            val pack = intent.getStringExtra("package")
             var title = intent.getStringExtra("title")
@@ -108,12 +108,12 @@ class LockScreenActivity : AppCompatActivity() {
             Log.v("브로드캐스트", "$<b>$title : </b>$text")
         }
     }
-    val wakeLock: PowerManager.WakeLock =
-        (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-            newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-                acquire()
-            }
-        }
+//    val wakeLock: PowerManager.WakeLock =
+//        (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+//            newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
+//                acquire()
+//            }
+//        }
 
 
 

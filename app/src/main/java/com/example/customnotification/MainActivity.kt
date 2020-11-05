@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
+import com.example.customnotification.MainFragment.MainFragment
+import com.example.customnotification.MainFragment.NotiFragment
 import com.example.customnotification.receiver.BroadCastReceiver
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,6 +17,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        a.setOnClickListener{
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment,
+                    MainFragment()
+                )
+                .commit();
+        }
+        b.setOnClickListener{
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment,
+                    NotiFragment()
+                )
+                .commit();
+        }
+        c.setOnClickListener {
+            val list = AppCache(this)
+            list.clear()
+            Log.v("클리어",list.getAll().toString())
+        }
+
 
 
         button.setOnClickListener {
