@@ -18,6 +18,11 @@
         android:text="12:00"
         android:textSize="70sp"
         android:id="@+id/date_time"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/icontest"
+        android:src="@drawable/ic_launcher_foreground"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

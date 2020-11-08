@@ -1,6 +1,8 @@
 package com.example.customnotification.MainFragment
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -67,11 +69,15 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.date = AppCache.getString("date$i", "0")
 
+            AllNotificationList.icon = AppCache.getString("icon$i", "0")
+
             Log.v("arraylist", AppCache.getString("title$i", "0"))
 
             Log.v("arraylist", AppCache.getString("text$i", "0"))
 
             Log.v("arraylist", AppCache.getString("date$i", "0"))
+
+            Log.v("arraylist", AppCache.getString("icon$i", "0"))
             arrayList.add(0,AllNotificationList)
 
 

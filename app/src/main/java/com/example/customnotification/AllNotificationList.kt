@@ -16,4 +16,9 @@ public class AllNotificationList {
         set(value) {
             field = value
         }
+    var icon: String?= null
+        get() = field
+        set(value) {
+            field = value
+        }
 }

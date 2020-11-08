@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -52,7 +52,7 @@ class LockScreenActivity : AppCompatActivity() {
             runOnUiThread {
                 date_time.setText(dateFormat)
                 date_day.setText(dateFormat2)
-                Log.v("TAG", dateFormat1)
+//                Log.v("TAG", dateFormat1)
             }
         }
         lock_open.setOnClickListener {
@@ -79,6 +79,17 @@ class LockScreenActivity : AppCompatActivity() {
             var title = intent.getStringExtra("title")
             var text = intent.getStringExtra("text")
             var date = intent.getStringExtra("date")
+//            var icon = intent.getStringExtra("icon")
+//            val bitmap1 = intent.getParcelableExtra("icon") as? Bitmap
+            val arr = intent.getByteArrayExtra("icon")
+            var image = BitmapFactory.decodeByteArray(arr, 0, arr.size)
+
+
+//            val byteArray = intent.getByteArrayExtra("icon")
+//            val image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+
+//            val bitmap = BitmapConverter().StringToBitmap(icon)
+            icontest.setImageBitmap(image)
 
             val NotificationList = NotificationList()
 //            var inflater: LayoutInflater = getLayoutInflater()
@@ -93,6 +104,8 @@ class LockScreenActivity : AppCompatActivity() {
             NotificationList.title = title
             NotificationList.text = text
             NotificationList.date = date
+
+
 
 
             arrayList.add(0,NotificationList)
