@@ -11,10 +11,11 @@ class Holder(v: View) : RecyclerView.ViewHolder(v){
     var view : View = v
 
     fun bind(item: AllNotificationList) {
-        view.list_title.text = item.text
-        view.list_text.text = item.title
+        view.list_title.text = item.title
+        view.list_text.text = item.text
         view.list_date.text = item.date
         var icon = BitmapConverter().StringToBitmap(item.icon)
         view.list_icon.setImageBitmap(icon)
+        view.list_appname.text = item.appname
     }
 }

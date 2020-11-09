@@ -2,22 +2,20 @@ package com.example.customnotification
 
 import android.Manifest
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.customnotification.MainFragment.MainFragment
 import com.example.customnotification.MainFragment.NotiFragment
-import com.example.customnotification.receiver.BroadCastReceiver
 import kotlinx.android.synthetic.main.activity_main.*
 
 
+
 class MainActivity : AppCompatActivity() {
+    var firstfragment : Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,57 +34,17 @@ class MainActivity : AppCompatActivity() {
                 )
                 .commit();
         }
-        c.setOnClickListener {
-            val list = AppCache(this)
-            list.clear()
-            Log.v("클리어",list.getAll().toString())
-        }
+        firstfragment = MainFragment()
+
+        setDefaultFragment()
 
 
-
-        button.setOnClickListener {
-            if (!isNotificationPermissionAllowed())
-                startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-
-            /**
-             * Notification 접근 권한 체크 메서드
-             * @return 접근권한이 있을 경우 true, 아니면 false
-             */
-
-        }
-        onBtn.setOnClickListener {
-                val intent = Intent(applicationContext, ScreenService::class.java)
-                startService(intent)
-        }
-        offBtn.setOnClickListener{
-                val intent = Intent(applicationContext, ScreenService::class.java)
-                stopService(intent)
-        }
-        now_start.setOnClickListener {
-            val intent = Intent(this, LockScreenActivity::class.java)
-            startActivity(intent)
-        }
-
-        send.setOnClickListener {
-            val br : BroadcastReceiver = BroadCastReceiver()
-            val filter = IntentFilter().apply{
-                addAction(Intent.ACTION_SCREEN_ON)
-
-            }
-            registerReceiver(br, filter)
-//            Toast.makeText(this,"?",Toast.LENGTH_SHORT).show()
-        }
 
     }
 
 
 
-    private fun isNotificationPermissionAllowed(): Boolean {
-        return NotificationManagerCompat.getEnabledListenerPackages(applicationContext)
-                .any { enabledPackageName ->
-                    enabledPackageName == packageName
-                }
-    }
+
 
     // Storage Permissions
     private val REQUEST_EXTERNAL_STORAGE = 1
@@ -118,4 +76,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+    fun setDefaultFragment() {
+        //화면에 보여지는 fragment를 추가하거나 바꿀 수 있는 객체를 만든다.
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        //첫번째로 보여지는 fragment는 firstFragment로 설정한다.
+        transaction.add(R.id.fragment, firstfragment!!)
+        //fragment의 변경사항을 반영시킨다.
+        transaction.commit()
+    }
+
 }

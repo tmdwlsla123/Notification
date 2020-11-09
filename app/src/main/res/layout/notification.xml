@@ -23,13 +23,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/notification_icon"/>
                 <TextView
-                    android:id="@+id/notification_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
+                    android:id="@+id/notification_appname"
                     android:textColor="@android:color/black"
-                    android:text="알림제목"/>
+                    android:text="앱이름"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -41,6 +44,18 @@
                     android:text="시간"
                     android:textColor="@android:color/black"
                     android:layout_gravity="right"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:id="@+id/notification_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:text="알림제목"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

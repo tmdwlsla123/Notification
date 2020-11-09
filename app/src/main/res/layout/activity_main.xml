@@ -5,61 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/container">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="4">
-
-        <com.nex3z.flowlayout.FlowLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="알림"></Button>
-
-            <Button
-                android:id="@+id/onBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="잠금화면 on"></Button>
-
-            <Button
-                android:id="@+id/offBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="잠금화면 off"></Button>
-
-            <Button
-                android:id="@+id/now_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="잠금화면 보이게"></Button>
-
-            <Button
-                android:id="@+id/send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="브로드캐스트"></Button>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/c"
-                android:text="노티피케이션 초기화"/>
-        </com.nex3z.flowlayout.FlowLayout>
-    </LinearLayout>
 
 
     <FrameLayout
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="5" />
+        android:layout_weight="9" />
 
     <LinearLayout
         android:layout_width="match_parent"

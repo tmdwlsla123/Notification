@@ -23,9 +23,9 @@ class BitmapConverter {
     /*
      * Bitmap을 String형으로 변환
      * */
-    fun BitmapToString(bitmap: Bitmap): String {
+    fun BitmapToString(bitmap: Bitmap?): String {
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos)
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 70, baos)
         val bytes: ByteArray = baos.toByteArray()
         return Base64.encodeToString(bytes, Base64.DEFAULT)
     }

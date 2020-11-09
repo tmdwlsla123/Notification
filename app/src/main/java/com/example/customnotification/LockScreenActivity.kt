@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.android.synthetic.main.activity_lock_screen.*
+import kotlinx.android.synthetic.main.notification.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.timer
@@ -67,43 +68,33 @@ class LockScreenActivity : AppCompatActivity() {
 
         val textView = TextView(this)
         textView.text = "글자"
-//        myLinearLayout.addView(textView)
-//        myLinearLayout.addView(textView)
+
 
 
     }
 
     private var onNotice: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
-//            val pack = intent.getStringExtra("package")
+
             var title = intent.getStringExtra("title")
             var text = intent.getStringExtra("text")
             var date = intent.getStringExtra("date")
-//            var icon = intent.getStringExtra("icon")
-//            val bitmap1 = intent.getParcelableExtra("icon") as? Bitmap
+            var appname = intent.getStringExtra("appname")
+
             val arr = intent.getByteArrayExtra("icon")
             var image = BitmapFactory.decodeByteArray(arr, 0, arr.size)
 
 
-//            val byteArray = intent.getByteArrayExtra("icon")
-//            val image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-
-//            val bitmap = BitmapConverter().StringToBitmap(icon)
-            icontest.setImageBitmap(image)
 
             val NotificationList = NotificationList()
-//            var inflater: LayoutInflater = getLayoutInflater()
-//            notification_title.setText(title)
-//            notification_date.setText(date)
-//            notification_text.setText(text)
-//            inflater.inflate(R.layout.notification, myLinearLayout, true)
 
-            //
 
 
             NotificationList.title = title
             NotificationList.text = text
             NotificationList.date = date
+            NotificationList.icon = image
+            NotificationList.appname = appname
 
 
 
@@ -111,8 +102,7 @@ class LockScreenActivity : AppCompatActivity() {
             arrayList.add(0,NotificationList)
             val notificationadapter = NotificationAdapter(applicationContext, arrayList)
             notifi_list.adapter = notificationadapter
-//            notificationadapter!!.setItem(arrayList)
-//            notificationadapter!!.notifyDataSetChanged()
+
 
             Log.v("리스트 배열",notificationadapter.toString())
             Log.v("리스트 배열",arrayList.toString())
@@ -121,12 +111,7 @@ class LockScreenActivity : AppCompatActivity() {
             Log.v("브로드캐스트", "$<b>$title : </b>$text")
         }
     }
-//    val wakeLock: PowerManager.WakeLock =
-//        (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-//            newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-//                acquire()
-//            }
-//        }
+
 
 
 

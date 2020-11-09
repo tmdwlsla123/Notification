@@ -5,8 +5,8 @@ import android.app.Notification
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -15,6 +15,9 @@ import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,15 +44,21 @@ class MyNotificationListenerService: NotificationListenerService() {
             var extras: Bundle = notificatin.extras
             var title = extras.getString(Notification.EXTRA_TITLE)
             var text = extras.getCharSequence(Notification.EXTRA_TEXT).toString()
-            var date = SimpleDateFormat("HH:mm", Locale.KOREA).format(Calendar.getInstance().time)
+            var date = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA).format(Calendar.getInstance().time)
             var subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
             var iconid = notificatin.smallIcon.loadDrawable(mContext)
-//            val iconId = extras.getInt(Notification.EXTRA_SMALL_ICON)
-//            var icon1 = notificatin.getLargeIcon().loadDrawable(mContext)
-//            var bitmap1: Bitmap = (icon1 as BitmapDrawable).bitmap
-//            var bitmap: Bitmap = (icon as BitmapDrawable).bitmap
+
             var smallIconRes = extras.getInt(Notification.EXTRA_SMALL_ICON)
             var appIcon: Drawable? = null
+            var pm :PackageManager = applicationContext.packageManager
+//            var ai = pm.getApplicationLabel(packageManager.getApplicationInfo(this,pack))
+            val packageManager = applicationContext.packageManager
+            val appName = packageManager.getApplicationLabel(
+                packageManager.getApplicationInfo(
+                    this,
+                    PackageManager.GET_META_DATA
+                )
+            ) as String
             try {
                 appIcon = notificatin.smallIcon.loadDrawable(mContext)
             } catch (e: PackageManager.NameNotFoundException) {
@@ -63,20 +72,29 @@ class MyNotificationListenerService: NotificationListenerService() {
             Log.v("아이콘",iconid.toString())
             Log.v("아이콘",notificatin.toString())
             var pack = this
+
+            var remotePackageContext: Context? = null
             var bmp: Bitmap? = null
-//            try {
-//                mContext = applicationContext.createPackageContext(pack, 0)
-//                val icon = mContext.resources.getDrawable(iconId)
-//                if (icon != null) {
-//                    bmp = (icon as BitmapDrawable).bitmap
-//                }
-//            } catch (e: java.lang.Exception) {
-//                e.printStackTrace()
-//            }
+
+            var icon: Drawable? = null
+
+            var da : Drawable? = null
+            try {
+                remotePackageContext = applicationContext.createPackageContext(pack, 0)
+                icon  = remotePackageContext.getResources().getDrawable(notificatin.smallIcon.resId)
+                 da  = mContext.packageManager.getApplicationIcon(pack)
+                if (da != null) {
+                    bmp = getBitmapFromDrawable(da)
+
+
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
 
             val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            bmp?.compress(Bitmap.CompressFormat.PNG, 100, baos)
             val b: ByteArray = baos.toByteArray()
 
 
@@ -88,15 +106,16 @@ class MyNotificationListenerService: NotificationListenerService() {
             msgrcv.putExtra("text", text)
             msgrcv.putExtra("date", date)
             msgrcv.putExtra("icon", b)
+            msgrcv.putExtra("appname", appName)
 
             LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
 
 //            val pref = this.getPreferences(0)
             val list = AppCache(mContext)
-//            list.saveNotification(title,text,date,bitmap)
+            list.saveNotification(title,text,date,bmp,appName)
 
 
-            Log.v("노티",list.getAll().toString())
+//            Log.v("노티",list.getAll().toString())
 
 
 
@@ -104,7 +123,12 @@ class MyNotificationListenerService: NotificationListenerService() {
             Log.i("NotificationListener", "[snowdeer] Title:$title")
             Log.i("NotificationListener", "[snowdeer] Text:$text")
             Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
-//            Log.i("NotificationListener", "[snowdeer] Icon:$largeIcon")
+            Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
+            Log.i("NotificationListener", "[snowdeer] icon:${icon.toString()}")
+            Log.i("NotificationListener", "[snowdeer] bmp:${bmp.toString()}")
+            Log.i("NotificationListener", "[snowdeer] test:${da}")
+
+
         }
     }
     private fun getBitmapFromDrawable(drawable: Drawable): Bitmap {
@@ -118,4 +142,17 @@ class MyNotificationListenerService: NotificationListenerService() {
         drawable.draw(canvas)
         return bmp
     }
+    private fun saveBitmapAsFile(bitmap: Bitmap, filepath: String) {
+        val file = File(filepath)
+        var os: OutputStream? = null
+        try {
+            file.createNewFile()
+            os = FileOutputStream(file)
+            bitmap.compress(CompressFormat.PNG, 100, os)
+            os.close()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }

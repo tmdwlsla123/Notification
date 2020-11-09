@@ -23,7 +23,8 @@ class NotificationAdapter (val context: Context, val notificationList:  ArrayLis
             holder.title = view.findViewById(R.id.notification_title)
             holder.text = view.findViewById(R.id.notification_text)
             holder.date = view.findViewById(R.id.notification_date)
-//            holder.icon = view.findViewById(R.id.notification_icon)
+            holder.appname = view.findViewById(R.id.notification_appname)
+            holder.icon = view.findViewById(R.id.notification_icon)
             Log.v("뷰 생성","확인용")
 
             view.tag = holder
@@ -43,6 +44,8 @@ class NotificationAdapter (val context: Context, val notificationList:  ArrayLis
         holder.title?.text = list.title
         holder.text?.text = list.text
         holder.date?.text = list.date
+        holder.appname?.text = list.appname
+        holder.icon?.setImageBitmap(list.icon)
 //        holder.icon?.text = list.icon
         /* holder와 실제 데이터를 연결한다. null일 수 있으므로 변수에 '?'을 붙여 safe call 한다. */
 
@@ -65,6 +68,8 @@ class NotificationAdapter (val context: Context, val notificationList:  ArrayLis
         var title : TextView? = null
         var text: TextView? = null
         var date: TextView? = null
+        var appname: TextView? = null
+        var icon: ImageView? = null
 //        var icon: ImageView? = null
 
     }
