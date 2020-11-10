@@ -66,11 +66,11 @@ class MyNotificationListenerService: NotificationListenerService() {
             }
             val bitmap = getBitmapFromDrawable(appIcon!!)
 
-            Log.v("아이콘",smallIconRes.toString())
-            Log.v("아이콘",appIcon.toString())
-            Log.v("아이콘",bitmap.toString())
-            Log.v("아이콘",iconid.toString())
-            Log.v("아이콘",notificatin.toString())
+//            Log.v("아이콘",smallIconRes.toString())
+//            Log.v("아이콘",appIcon.toString())
+//            Log.v("아이콘",bitmap.toString())
+//            Log.v("아이콘",iconid.toString())
+//            Log.v("아이콘",notificatin.toString())
             var pack = this
 
             var remotePackageContext: Context? = null
@@ -112,7 +112,11 @@ class MyNotificationListenerService: NotificationListenerService() {
 
 //            val pref = this.getPreferences(0)
             val list = AppCache(mContext)
-            list.saveNotification(title,text,date,bmp,appName)
+            if(-1 ==sbn.key.indexOf("0|com.facebook.orca|20001|null|") ){
+
+                list.saveNotification(title,text,date,bmp,appName)
+            }
+
 
 
 //            Log.v("노티",list.getAll().toString())
@@ -127,6 +131,8 @@ class MyNotificationListenerService: NotificationListenerService() {
             Log.i("NotificationListener", "[snowdeer] icon:${icon.toString()}")
             Log.i("NotificationListener", "[snowdeer] bmp:${bmp.toString()}")
             Log.i("NotificationListener", "[snowdeer] test:${da}")
+            Log.i("NotificationListener", "[snowdeer] key:${sbn.key.indexOf("0|com.facebook.orca|20001|null|")}")
+
 
 
         }

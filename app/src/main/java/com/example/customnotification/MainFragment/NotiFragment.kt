@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,11 +42,12 @@ class NotiFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var noti_list : RecyclerView
-    lateinit var noti_search : LinearLayout
+    lateinit var noti_list: RecyclerView
+    lateinit var noti_search: LinearLayout
     var arrayList = ArrayList<AllNotificationList>()
     val COUNT_KEY = "count_key"
     var mContext: Context? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +57,11 @@ class NotiFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-    override  fun onAttach(context : Context){
+
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         requireContext()
-         mContext = context
+        mContext = context
     }
 
     override fun onCreateView(
@@ -72,7 +76,7 @@ class NotiFragment : Fragment() {
         var Strnow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
         noti_search.textView2.text = Strnow
 
-        val AppCache = AppCache(requireContext())
+        var AppCache = AppCache(requireContext())
 
         Log.v("NotiNumber", AppCache.getInt(COUNT_KEY, 0).toString())
 //        Log.v("NotiNumber", AppCache.getAll().toString())
@@ -83,9 +87,9 @@ class NotiFragment : Fragment() {
             var month = calendar.get(Calendar.MONTH)
             var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            var date_listener  = object : DatePickerDialog.OnDateSetListener {
+            var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    textView1.text =  "${year} . ${month + 1} . ${dayOfMonth}"
+                    textView1.text = "${year} . ${month + 1} . ${dayOfMonth}"
                 }
             }
 
@@ -99,9 +103,9 @@ class NotiFragment : Fragment() {
             var month = calendar.get(Calendar.MONTH)
             var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            var date_listener  = object : DatePickerDialog.OnDateSetListener {
+            var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    textView2.text =  "${year} + ${month + 1} + ${dayOfMonth}"
+                    textView2.text = "${year} + ${month + 1} + ${dayOfMonth}"
                 }
             }
 
@@ -109,6 +113,56 @@ class NotiFragment : Fragment() {
             builder.show()
 
         }
+
+        var map: Map<String, *> = AppCache(context).getAll()
+
+
+        noti_search.search_button.setOnClickListener {
+            arrayList.clear()
+            var search_value = noti_search.search_noti.text.toString()
+            val search_map: ArrayList<String> = ArrayList()
+//            Log.v("흠",search_map.toString())
+            if (!search_value.equals("")) {
+                for ((key, value) in map) {
+
+                    if (-1 < value.toString().indexOf(search_value)) {
+//                    Log.v("흠", "[key]:$key, [value]:$value")
+                        if (!search_map.contains(key.replace("[^0-9]".toRegex(), ""))) {
+                            search_map.add(key.replace("[^0-9]".toRegex(), ""))
+                        }
+                    }
+                }
+                Collections.sort(search_map)
+                Log.v("흠", search_map.toString())
+                for (i in 0..search_map.size - 1) {
+                    val AllNotificationList = AllNotificationList()
+                    AllNotificationList.title = AppCache.getString("title${search_map[i]}", "0")
+                    AllNotificationList.text = AppCache.getString("text${search_map[i]}", "0")
+                    AllNotificationList.date = AppCache.getString("date${search_map[i]}", "0")
+                    AllNotificationList.icon = AppCache.getString("icon${search_map[i]}", "0")
+                    AllNotificationList.appname = AppCache.getString("appname${search_map[i]}", "0")
+
+                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
+                    arrayList.add(0, AllNotificationList)
+                }
+                val ListAdapter = ListAdapter(arrayList)
+                noti_list.adapter = ListAdapter
+                val lm = LinearLayoutManager(requireContext())
+                noti_list.layoutManager = lm
+                noti_list.setHasFixedSize(true)
+                ListAdapter.notifyDataSetChanged()
+            }
+            else{
+                start()
+            }
+
+//            Log.v("흠",search_map.get(1).length.toString())
+//            Log.v("흠",search_map.size.toString())
+
+
+
+        }
+
 
         for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
             val AllNotificationList = AllNotificationList()
@@ -131,10 +185,11 @@ class NotiFragment : Fragment() {
             Log.v("arraylist", AppCache.getString("date$i", "0"))
 
 //            Log.v("arraylist", AppCache.getString("icon$i", "0"))
-            arrayList.add(0,AllNotificationList)
+            arrayList.add(0, AllNotificationList)
 
 
         }
+
         val ListAdapter = ListAdapter(arrayList)
         noti_list.adapter = ListAdapter
         val lm = LinearLayoutManager(requireContext())
@@ -142,10 +197,6 @@ class NotiFragment : Fragment() {
         noti_list.setHasFixedSize(true)
         ListAdapter.notifyDataSetChanged()
 //        Log.v("arraylist", AllNotificationList)
-
-
-
-
 
 
         // Inflate the layout for this fragment
@@ -181,17 +232,53 @@ class NotiFragment : Fragment() {
                 mContext!!.packageName,
                 0
             ).firstInstallTime
-            Log.v("설치날짜",getData(installed))
+            Log.v("설치날짜", getData(installed))
             noti_search.textView1.text = getData(installed)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
 
     }
+
     private fun getData(datetime: Long): String? {
         val formatter: DateFormat = SimpleDateFormat("yyyy.MM.dd")
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = datetime
         return formatter.format(calendar.time)
+    }
+    private fun start(){
+        var AppCache = AppCache(requireContext())
+        for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
+            val AllNotificationList = AllNotificationList()
+            AllNotificationList.title = AppCache.getString("title$i", "0")
+
+            AllNotificationList.text = AppCache.getString("text$i", "0")
+
+            AllNotificationList.date = AppCache.getString("date$i", "0")
+
+            AllNotificationList.icon = AppCache.getString("icon$i", "0")
+
+            AllNotificationList.appname = AppCache.getString("appname$i", "0")
+
+
+
+            Log.v("arraylist", AppCache.getString("title$i", "0"))
+
+            Log.v("arraylist", AppCache.getString("text$i", "0"))
+
+            Log.v("arraylist", AppCache.getString("date$i", "0"))
+
+//            Log.v("arraylist", AppCache.getString("icon$i", "0"))
+            arrayList.add(0, AllNotificationList)
+
+
+        }
+
+        val ListAdapter = ListAdapter(arrayList)
+        noti_list.adapter = ListAdapter
+        val lm = LinearLayoutManager(requireContext())
+        noti_list.layoutManager = lm
+        noti_list.setHasFixedSize(true)
+        ListAdapter.notifyDataSetChanged()
     }
 }
