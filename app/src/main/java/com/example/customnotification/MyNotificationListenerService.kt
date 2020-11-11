@@ -20,37 +20,43 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import 	android.util.Base64
 
 
 @SuppressLint("OverrideAbstract")
-class MyNotificationListenerService: NotificationListenerService() {
+class MyNotificationListenerService : NotificationListenerService() {
     var mContext: Context = this
     override fun onListenerConnected() {
         super.onListenerConnected()
-        Log.e("kobbi","MyNotificationListener.onListenerConnected()")
+        Log.e("kobbi", "MyNotificationListener.onListenerConnected()")
     }
 
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
-        Log.e("kobbi","MyNotificationListener.onListenerDisconnected()")
+        Log.e("kobbi", "MyNotificationListener.onListenerDisconnected()")
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
         sbn?.packageName?.run {
-            Log.e("kobbi","MyNotificationListener.onNotificationPosted() --> packageName: $this")
+            Log.e("kobbi", "MyNotificationListener.onNotificationPosted() --> packageName: $this")
             var notificatin: Notification = sbn.notification
 
             var extras: Bundle = notificatin.extras
             var title = extras.getString(Notification.EXTRA_TITLE)
             var text = extras.getCharSequence(Notification.EXTRA_TEXT).toString()
-            var date = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA).format(Calendar.getInstance().time)
+            var date = SimpleDateFormat(
+                "yyyy.MM.dd HH:mm",
+                Locale.KOREA
+            ).format(Calendar.getInstance().time)
             var subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
-            var iconid = notificatin.smallIcon.loadDrawable(mContext)
-
+            //kakao profile picture
+            var picture   = extras.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
+            var picture1 = extras.get(Notification.EXTRA_PICTURE) as? Bitmap
+            var picture2 = extras.get(Notification.EXTRA_SMALL_ICON) as? Bitmap
             var smallIconRes = extras.getInt(Notification.EXTRA_SMALL_ICON)
             var appIcon: Drawable? = null
-            var pm :PackageManager = applicationContext.packageManager
+            var pm: PackageManager = applicationContext.packageManager
 //            var ai = pm.getApplicationLabel(packageManager.getApplicationInfo(this,pack))
             val packageManager = applicationContext.packageManager
             val appName = packageManager.getApplicationLabel(
@@ -78,13 +84,15 @@ class MyNotificationListenerService: NotificationListenerService() {
 
             var icon: Drawable? = null
 
-            var da : Drawable? = null
+            var da: Drawable? = null
             try {
                 remotePackageContext = applicationContext.createPackageContext(pack, 0)
-                icon  = remotePackageContext.getResources().getDrawable(notificatin.smallIcon.resId)
-                 da  = mContext.packageManager.getApplicationIcon(pack)
+                icon = remotePackageContext.getResources().getDrawable(notificatin.smallIcon.resId)
+                da = mContext.packageManager.getApplicationIcon(pack)
+
                 if (da != null) {
                     bmp = getBitmapFromDrawable(da)
+
 
 
                 }
@@ -98,45 +106,81 @@ class MyNotificationListenerService: NotificationListenerService() {
             val b: ByteArray = baos.toByteArray()
 
 
-
+            val baos1 = ByteArrayOutputStream()
+//            picture?.compress(Bitmap.CompressFormat.PNG, 100, baos1)
+            val b1: ByteArray = baos1.toByteArray()
 
 
             val msgrcv = Intent("Msg")
-            msgrcv.putExtra("title", title)
-            msgrcv.putExtra("text", text)
-            msgrcv.putExtra("date", date)
-            msgrcv.putExtra("icon", b)
-            msgrcv.putExtra("appname", appName)
+
 
             LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
 
 //            val pref = this.getPreferences(0)
+
             val list = AppCache(mContext)
-            if(-1 ==sbn.key.indexOf("0|com.facebook.orca|20001|null|") ){
+            var arr = sbn.key.split("|")
+            Log.v("배열", arr.toString())
 
-                list.saveNotification(title,text,date,bmp,appName)
+            if (arr[1].equals("com.facebook.orca") && arr[2].equals("20001")) {
+
             }
+            else if(arr[1].equals("com.kakao.talk") && arr[2].equals("1")){
 
+            }
+            else if(text.equals("null")){
+
+            }
+            else {
+                list.saveNotification(title, text, date, bmp, appName,picture1)
+                msgrcv.putExtra("title", title)
+                msgrcv.putExtra("text", text)
+                msgrcv.putExtra("date", date)
+                msgrcv.putExtra("icon", b)
+                msgrcv.putExtra("appname", appName)
+            }
 
 
 //            Log.v("노티",list.getAll().toString())
 
-
+            var test = sbn.notification
+            Log.i("NotificationListener", "[snowdeer] EXTRA_MESSAGES:$test")
 
 
             Log.i("NotificationListener", "[snowdeer] Title:$title")
             Log.i("NotificationListener", "[snowdeer] Text:$text")
             Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
             Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
-            Log.i("NotificationListener", "[snowdeer] icon:${icon.toString()}")
-            Log.i("NotificationListener", "[snowdeer] bmp:${bmp.toString()}")
-            Log.i("NotificationListener", "[snowdeer] test:${da}")
-            Log.i("NotificationListener", "[snowdeer] key:${sbn.key.indexOf("0|com.facebook.orca|20001|null|")}")
+            Log.i("NotificationListener", "[snowdeer] Emoticon:${extras.get(Notification.EXTRA_SMALL_ICON)}")
+            Log.i("NotificationListener", "[snowdeer] Emoticon:${notificatin.smallIcon}")
+            Log.i("NotificationListener", "[snowdeer] picture1:${extras.getInt(Notification.EXTRA_PICTURE)}")
+            Log.i("NotificationListener", "[snowdeer] picture1:${extras.getInt(Notification.EXTRA_SMALL_ICON)}")
+            Log.i("NotificationListener", "[snowdeer] picture1:${sbn.notification.extras.get(Notification.EXTRA_PICTURE)}")
+            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_BACKGROUND_IMAGE_URI)}")
+            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
 
 
-
+            if (extras.containsKey(Notification.EXTRA_PICTURE)) {
+                bmp = extras[Notification.EXTRA_PICTURE] as Bitmap?
+                val byteArrayOutputStream =
+                    ByteArrayOutputStream()
+                bmp!!.compress(CompressFormat.PNG, 100, byteArrayOutputStream)
+               var byteArrayS = byteArrayOutputStream.toByteArray()
+               var encoded = Base64.encodeToString(byteArrayS, Base64.DEFAULT)
+                val LOGCAT_MAX_LENGTH = 3950
+                if (BuildConfig.DEBUG) {
+                    while (encoded.length > LOGCAT_MAX_LENGTH) {
+                        var substringIndex: Int = encoded.lastIndexOf(",", LOGCAT_MAX_LENGTH)
+                        if (substringIndex == -1) substringIndex = LOGCAT_MAX_LENGTH
+                        Log.d("encode", encoded.substring(0, substringIndex))
+                        encoded = encoded.substring(substringIndex).trim()
+                    }
+                    Log.d("encode", encoded)
+                }
+            }
         }
     }
+
     private fun getBitmapFromDrawable(drawable: Drawable): Bitmap {
         val bmp = Bitmap.createBitmap(
             drawable.intrinsicWidth,
@@ -148,6 +192,7 @@ class MyNotificationListenerService: NotificationListenerService() {
         drawable.draw(canvas)
         return bmp
     }
+
     private fun saveBitmapAsFile(bitmap: Bitmap, filepath: String) {
         val file = File(filepath)
         var os: OutputStream? = null

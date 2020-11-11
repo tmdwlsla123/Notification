@@ -142,7 +142,7 @@ class NotiFragment : Fragment() {
                     AllNotificationList.icon = AppCache.getString("icon${search_map[i]}", "0")
                     AllNotificationList.appname = AppCache.getString("appname${search_map[i]}", "0")
 
-                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
+//                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
                     arrayList.add(0, AllNotificationList)
                 }
                 val ListAdapter = ListAdapter(arrayList)
@@ -176,13 +176,15 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.appname = AppCache.getString("appname$i", "0")
 
+            AllNotificationList.picture = AppCache.getString("picture$i", "0")
 
 
-            Log.v("arraylist", AppCache.getString("title$i", "0"))
 
-            Log.v("arraylist", AppCache.getString("text$i", "0"))
-
-            Log.v("arraylist", AppCache.getString("date$i", "0"))
+//            Log.v("arraylist", AppCache.getString("title$i", "0"))
+//
+//            Log.v("arraylist", AppCache.getString("text$i", "0"))
+//
+//            Log.v("arraylist", AppCache.getString("date$i", "0"))
 
 //            Log.v("arraylist", AppCache.getString("icon$i", "0"))
             arrayList.add(0, AllNotificationList)

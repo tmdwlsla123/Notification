@@ -17,5 +17,7 @@ class Holder(v: View) : RecyclerView.ViewHolder(v){
         var icon = BitmapConverter().StringToBitmap(item.icon)
         view.list_icon.setImageBitmap(icon)
         view.list_appname.text = item.appname
+        var picture = BitmapConverter().StringToBitmap(item.picture)
+        view.list_picture.setImageBitmap(picture)
     }
 }
