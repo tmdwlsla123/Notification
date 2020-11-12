@@ -31,4 +31,9 @@ public class AllNotificationList {
         set(value) {
             field = value
         }
+    var picture1: String?= null
+        get() = field
+        set(value) {
+            field = value
+        }
 }

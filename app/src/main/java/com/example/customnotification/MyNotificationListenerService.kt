@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.util.Base64
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java.io.ByteArrayOutputStream
@@ -20,7 +21,6 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import 	android.util.Base64
 
 
 @SuppressLint("OverrideAbstract")
@@ -132,7 +132,7 @@ class MyNotificationListenerService : NotificationListenerService() {
 
             }
             else {
-                list.saveNotification(title, text, date, bmp, appName,picture1)
+                list.saveNotification(title, text, date, bmp, appName,picture,picture1)
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)
@@ -151,13 +151,22 @@ class MyNotificationListenerService : NotificationListenerService() {
             Log.i("NotificationListener", "[snowdeer] Text:$text")
             Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
             Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
-            Log.i("NotificationListener", "[snowdeer] Emoticon:${extras.get(Notification.EXTRA_SMALL_ICON)}")
-            Log.i("NotificationListener", "[snowdeer] Emoticon:${notificatin.smallIcon}")
-            Log.i("NotificationListener", "[snowdeer] picture1:${extras.getInt(Notification.EXTRA_PICTURE)}")
-            Log.i("NotificationListener", "[snowdeer] picture1:${extras.getInt(Notification.EXTRA_SMALL_ICON)}")
-            Log.i("NotificationListener", "[snowdeer] picture1:${sbn.notification.extras.get(Notification.EXTRA_PICTURE)}")
-            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_BACKGROUND_IMAGE_URI)}")
             Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
+            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_PICTURE)}")
+            Log.i("NotificationListener", "[snowdeer] extras:${extras}")
+            Log.i("NotificationListener", "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}")
+
+
+            if (extras != null) {
+                val keys: Set<String> = extras.keySet()
+                val it = keys.iterator()
+                Log.e("LOG_TAG", "Dumping Intent start")
+                while (it.hasNext()) {
+                    val key = it.next()
+                    Log.e("LOG_TAG", "[" + key + "=" + extras.get(key) + "]")
+                }
+                Log.e("LOG_TAG", "Dumping Intent end")
+            }
 
 
             if (extras.containsKey(Notification.EXTRA_PICTURE)) {

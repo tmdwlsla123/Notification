@@ -10,7 +10,7 @@ class AppCache(context: Context?) {
     private val PREF = "notificationApp"
     private val COUNT_KEY = "count_key"
     private val sharedPref: SharedPreferences = context!!.getSharedPreferences(PREF, Context.MODE_PRIVATE)
-    fun saveNotification(title: String?, text: String?, date :String?, icon : Bitmap?,appname :String,picture: Bitmap?) {
+    fun saveNotification(title: String?, text: String?, date :String?, icon : Bitmap?,appname :String,picture: Bitmap?,picture1: Bitmap?) {
 
         var count = sharedPref.getInt(COUNT_KEY, 0)
         count++
@@ -23,8 +23,10 @@ class AppCache(context: Context?) {
 
         val image = BitmapConverter().BitmapToString(icon)
         val picture_s = BitmapConverter().BitmapToString(picture)
+        val picture_ss = BitmapConverter().BitmapToString(picture1)
         sharedPref.edit().putString("icon$count", image ).apply()
         sharedPref.edit().putString("picture$count",picture_s).apply()
+        sharedPref.edit().putString("picture1$count",picture_ss).apply()
         //saving count in prefs
         sharedPref.edit().putInt(COUNT_KEY, count).apply()
     }

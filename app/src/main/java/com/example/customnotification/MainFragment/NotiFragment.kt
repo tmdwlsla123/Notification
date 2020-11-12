@@ -141,6 +141,7 @@ class NotiFragment : Fragment() {
                     AllNotificationList.date = AppCache.getString("date${search_map[i]}", "0")
                     AllNotificationList.icon = AppCache.getString("icon${search_map[i]}", "0")
                     AllNotificationList.appname = AppCache.getString("appname${search_map[i]}", "0")
+                    AllNotificationList.picture = AppCache.getString("picture${search_map[i]}", "0")
 
 //                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
                     arrayList.add(0, AllNotificationList)
@@ -178,7 +179,7 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.picture = AppCache.getString("picture$i", "0")
 
-
+            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
 
 //            Log.v("arraylist", AppCache.getString("title$i", "0"))
 //
@@ -262,7 +263,7 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.appname = AppCache.getString("appname$i", "0")
 
-
+            AllNotificationList.picture = AppCache.getString("picture$i", "0")
 
             Log.v("arraylist", AppCache.getString("title$i", "0"))
 
