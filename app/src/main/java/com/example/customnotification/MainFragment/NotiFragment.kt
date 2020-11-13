@@ -25,7 +25,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -72,9 +71,10 @@ class NotiFragment : Fragment() {
         noti_list = listItems.findViewById<View>(R.id.noti_list) as RecyclerView
         noti_search = listItems.findViewById<View>(R.id.noti_search) as LinearLayout
         test2()
-        var now = LocalDate.now()
-        var Strnow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-        noti_search.textView2.text = Strnow
+        val currentDateTime = Calendar.getInstance().time
+        var dateFormat1 =
+            SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(currentDateTime)
+        noti_search.textView2.text = dateFormat1
 
         var AppCache = AppCache(requireContext())
 
@@ -89,7 +89,7 @@ class NotiFragment : Fragment() {
 
             var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    textView1.text = "${year} . ${month + 1} . ${dayOfMonth}"
+                    textView1.text = "${year}.${month + 1}.${dayOfMonth}"
                 }
             }
 
@@ -105,7 +105,7 @@ class NotiFragment : Fragment() {
 
             var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    textView2.text = "${year} + ${month + 1} + ${dayOfMonth}"
+                    textView2.text = "${year}.${month + 1}.${dayOfMonth}"
                 }
             }
 
