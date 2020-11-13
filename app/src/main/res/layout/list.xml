@@ -48,10 +48,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/list_picture"/>
+
                 <TextView
                     android:id="@+id/list_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:includeFontPadding="false"
                     android:text="TITLE"
                     android:textColor="@android:color/black"
@@ -62,16 +63,23 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/list_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:textColor="@android:color/black"
                     android:includeFontPadding="false"
                     android:text="content"
 
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/list_bigtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
                     android:textSize="13sp" />
                 <ImageView
                     android:layout_width="wrap_content"

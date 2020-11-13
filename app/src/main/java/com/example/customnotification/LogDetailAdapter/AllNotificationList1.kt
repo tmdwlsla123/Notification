@@ -1,6 +1,6 @@
-package com.example.customnotification
+package com.example.customnotification.LogDetailAdapter
 
-public class AllNotificationList {
+public class AllNotificationList1 {
     var title: String?= null
         get() = field
         set(value) {
@@ -31,11 +31,11 @@ public class AllNotificationList {
         set(value) {
             field = value
         }
-//    var picture: String?= null
-//        get() = field
-//        set(value) {
-//            field = value
-//        }
+    var picture: String?= null
+        get() = field
+        set(value) {
+            field = value
+        }
 //    var picture1: String?= null
 //        get() = field
 //        set(value) {

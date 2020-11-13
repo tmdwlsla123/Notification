@@ -78,7 +78,7 @@ class NotiFragment : Fragment() {
 
         var AppCache = AppCache(requireContext())
 
-        Log.v("NotiNumber", AppCache.getInt(COUNT_KEY, 0).toString())
+//        Log.v("NotiNumber", AppCache.getAll().toString())
 //        Log.v("NotiNumber", AppCache.getAll().toString())
 
         noti_search.noit_calendar1.setOnClickListener { view ->
@@ -116,70 +116,70 @@ class NotiFragment : Fragment() {
 
         var map: Map<String, *> = AppCache(context).getAll()
 
-
-        noti_search.search_button.setOnClickListener {
-            arrayList.clear()
-            var search_value = noti_search.search_noti.text.toString()
-            val search_map: ArrayList<String> = ArrayList()
-//            Log.v("흠",search_map.toString())
-            if (!search_value.equals("")) {
-                for ((key, value) in map) {
-
-                    if (-1 < value.toString().indexOf(search_value)) {
-//                    Log.v("흠", "[key]:$key, [value]:$value")
-                        if (!search_map.contains(key.replace("[^0-9]".toRegex(), ""))) {
-                            search_map.add(key.replace("[^0-9]".toRegex(), ""))
-                        }
-                    }
-                }
-                Collections.sort(search_map)
-                Log.v("흠", search_map.toString())
-                for (i in 0..search_map.size - 1) {
-                    val AllNotificationList = AllNotificationList()
-                    AllNotificationList.title = AppCache.getString("title${search_map[i]}", "0")
-                    AllNotificationList.text = AppCache.getString("text${search_map[i]}", "0")
-                    AllNotificationList.date = AppCache.getString("date${search_map[i]}", "0")
-                    AllNotificationList.icon = AppCache.getString("icon${search_map[i]}", "0")
-                    AllNotificationList.appname = AppCache.getString("appname${search_map[i]}", "0")
-                    AllNotificationList.picture = AppCache.getString("picture${search_map[i]}", "0")
-
-//                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
-                    arrayList.add(0, AllNotificationList)
-                }
-                val ListAdapter = ListAdapter(arrayList)
-                noti_list.adapter = ListAdapter
-                val lm = LinearLayoutManager(requireContext())
-                noti_list.layoutManager = lm
-                noti_list.setHasFixedSize(true)
-                ListAdapter.notifyDataSetChanged()
-            }
-            else{
-                start()
-            }
-
-//            Log.v("흠",search_map.get(1).length.toString())
-//            Log.v("흠",search_map.size.toString())
-
-
-
-        }
+//        //클릭
+//        noti_search.search_button.setOnClickListener {
+//            arrayList.clear()
+//            var search_value = noti_search.search_noti.text.toString()
+//            val search_map: ArrayList<String> = ArrayList()
+////            Log.v("흠",search_map.toString())
+//            if (!search_value.equals("")) {
+//                for ((key, value) in map) {
+//
+//                    if (-1 < value.toString().indexOf(search_value)) {
+////                    Log.v("흠", "[key]:$key, [value]:$value")
+//                        if (!search_map.contains(key.replace("[^0-9]".toRegex(), ""))) {
+//                            search_map.add(key.replace("[^0-9]".toRegex(), ""))
+//                        }
+//                    }
+//                }
+//                Collections.sort(search_map)
+//                Log.v("흠", search_map.toString())
+//                for (i in 0..search_map.size - 1) {
+//                    val AllNotificationList = AllNotificationList()
+//                    AllNotificationList.title = AppCache.getString("title${search_map[i]}", "0")
+//                    AllNotificationList.text = AppCache.getString("text${search_map[i]}", "0")
+//                    AllNotificationList.date = AppCache.getString("date${search_map[i]}", "0")
+//                    AllNotificationList.icon = AppCache.getString("icon${search_map[i]}", "0")
+//                    AllNotificationList.appname = AppCache.getString("appname${search_map[i]}", "0")
+//                    AllNotificationList.picture = AppCache.getString("picture${search_map[i]}", "0")
+//
+////                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
+//                    arrayList.add(0, AllNotificationList)
+//                }
+//                val ListAdapter = ListAdapter(arrayList)
+//                noti_list.adapter = ListAdapter
+//                val lm = LinearLayoutManager(requireContext())
+//                noti_list.layoutManager = lm
+//                noti_list.setHasFixedSize(true)
+//                ListAdapter.notifyDataSetChanged()
+//            }
+//            else{
+//                start()
+//            }
+//
+////            Log.v("흠",search_map.get(1).length.toString())
+////            Log.v("흠",search_map.size.toString())
+//        }
+//        //클릭
 
 
         for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
             val AllNotificationList = AllNotificationList()
-            AllNotificationList.title = AppCache.getString("title$i", "0")
+            AllNotificationList.title = AppCache.getString("title$i", "")
 
-            AllNotificationList.text = AppCache.getString("text$i", "0")
+            AllNotificationList.text = AppCache.getString("text$i", "")
 
-            AllNotificationList.date = AppCache.getString("date$i", "0")
+            AllNotificationList.bigtext = AppCache.getString("bigtext$i", "")
 
-            AllNotificationList.icon = AppCache.getString("icon$i", "0")
+            AllNotificationList.date = AppCache.getString("date$i", "")
 
-            AllNotificationList.appname = AppCache.getString("appname$i", "0")
+            AllNotificationList.icon = AppCache.getString("icon$i", "")
 
-            AllNotificationList.picture = AppCache.getString("picture$i", "0")
+            AllNotificationList.appname = AppCache.getString("appname$i", "")
 
-            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
+//            AllNotificationList.picture = AppCache.getString("picture$i", "0")
+
+//            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
 
 //            Log.v("arraylist", AppCache.getString("title$i", "0"))
 //
@@ -193,7 +193,7 @@ class NotiFragment : Fragment() {
 
         }
 
-        val ListAdapter = ListAdapter(arrayList)
+        val ListAdapter = ListAdapter(arrayList,activity)
         noti_list.adapter = ListAdapter
         val lm = LinearLayoutManager(requireContext())
         noti_list.layoutManager = lm
@@ -249,39 +249,39 @@ class NotiFragment : Fragment() {
         calendar.timeInMillis = datetime
         return formatter.format(calendar.time)
     }
-    private fun start(){
-        var AppCache = AppCache(requireContext())
-        for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
-            val AllNotificationList = AllNotificationList()
-            AllNotificationList.title = AppCache.getString("title$i", "0")
-
-            AllNotificationList.text = AppCache.getString("text$i", "0")
-
-            AllNotificationList.date = AppCache.getString("date$i", "0")
-
-            AllNotificationList.icon = AppCache.getString("icon$i", "0")
-
-            AllNotificationList.appname = AppCache.getString("appname$i", "0")
-
-            AllNotificationList.picture = AppCache.getString("picture$i", "0")
-
-            Log.v("arraylist", AppCache.getString("title$i", "0"))
-
-            Log.v("arraylist", AppCache.getString("text$i", "0"))
-
-            Log.v("arraylist", AppCache.getString("date$i", "0"))
-
-//            Log.v("arraylist", AppCache.getString("icon$i", "0"))
-            arrayList.add(0, AllNotificationList)
-
-
-        }
-
-        val ListAdapter = ListAdapter(arrayList)
-        noti_list.adapter = ListAdapter
-        val lm = LinearLayoutManager(requireContext())
-        noti_list.layoutManager = lm
-        noti_list.setHasFixedSize(true)
-        ListAdapter.notifyDataSetChanged()
-    }
+//    private fun start(){
+//        var AppCache = AppCache(requireContext())
+//        for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
+//            val AllNotificationList = AllNotificationList()
+//            AllNotificationList.title = AppCache.getString("title$i", "0")
+//
+//            AllNotificationList.text = AppCache.getString("text$i", "0")
+//
+//            AllNotificationList.date = AppCache.getString("date$i", "0")
+//
+//            AllNotificationList.icon = AppCache.getString("icon$i", "0")
+//
+//            AllNotificationList.appname = AppCache.getString("appname$i", "0")
+//
+//            AllNotificationList.picture = AppCache.getString("picture$i", "0")
+//
+//            Log.v("arraylist", AppCache.getString("title$i", "0"))
+//
+//            Log.v("arraylist", AppCache.getString("text$i", "0"))
+//
+//            Log.v("arraylist", AppCache.getString("date$i", "0"))
+//
+////            Log.v("arraylist", AppCache.getString("icon$i", "0"))
+//            arrayList.add(0, AllNotificationList)
+//
+//
+//        }
+//
+//        val ListAdapter = ListAdapter(arrayList)
+//        noti_list.adapter = ListAdapter
+//        val lm = LinearLayoutManager(requireContext())
+//        noti_list.layoutManager = lm
+//        noti_list.setHasFixedSize(true)
+//        ListAdapter.notifyDataSetChanged()
+//    }
 }

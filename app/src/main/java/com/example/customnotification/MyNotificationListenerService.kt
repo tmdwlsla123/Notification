@@ -43,6 +43,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             var notificatin: Notification = sbn.notification
 
             var extras: Bundle = notificatin.extras
+            var bigtext = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)
             var title = extras.getString(Notification.EXTRA_TITLE)
             var text = extras.getCharSequence(Notification.EXTRA_TEXT).toString()
             var date = SimpleDateFormat(
@@ -131,8 +132,17 @@ class MyNotificationListenerService : NotificationListenerService() {
             else if(text.equals("null")){
 
             }
+//            else if(text.equals("")){
+//                var bigtext = extras.getString(Notification.EXTRA_BIG_TEXT)
+//                list.saveNotification(title, bigtext, date, bmp, appName,picture,picture1)
+//                msgrcv.putExtra("title", title)
+//                msgrcv.putExtra("text", text)
+//                msgrcv.putExtra("date", date)
+//                msgrcv.putExtra("icon", b)
+//                msgrcv.putExtra("appname", appName)
+//            }
             else {
-                list.saveNotification(title, text, date, bmp, appName,picture,picture1)
+                list.saveNotification(title, text,bigtext, date, bmp, appName,picture,picture1)
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)
@@ -147,14 +157,14 @@ class MyNotificationListenerService : NotificationListenerService() {
             Log.i("NotificationListener", "[snowdeer] EXTRA_MESSAGES:$test")
 
 
-            Log.i("NotificationListener", "[snowdeer] Title:$title")
-            Log.i("NotificationListener", "[snowdeer] Text:$text")
-            Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
-            Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
-            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
-            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_PICTURE)}")
-            Log.i("NotificationListener", "[snowdeer] extras:${extras}")
-            Log.i("NotificationListener", "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}")
+//            Log.i("NotificationListener", "[snowdeer] Title:$title")
+//            Log.i("NotificationListener", "[snowdeer] Text:$text")
+//            Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
+//            Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
+//            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
+//            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_PICTURE)}")
+//            Log.i("NotificationListener", "[snowdeer] extras:${extras}")
+//            Log.i("NotificationListener", "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}")
 
 
             if (extras != null) {
