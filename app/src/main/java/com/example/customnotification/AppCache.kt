@@ -35,6 +35,7 @@ class AppCache(context: Context?) {
                 Log.v("참", "기존에 앱 이름 과 일치 후 반복문 조료")
                 sharedPref.edit().putString("title${i + 1}", title).apply()
                 sharedPref.edit().putString("text${i + 1}", text).apply()
+                sharedPref.edit().putString("bigtext${i + 1}", bigtext.toString()).apply()
                 sharedPref.edit().putString("date${i + 1}", date).apply()
 //                sharedPref.edit().putString("date${count}", date).apply()
 //                sharedPref.edit().putString("appname${count}", appname).apply()

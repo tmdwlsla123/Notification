@@ -1,4 +1,4 @@
-package com.example.customnotification
+package com.example.customnotification.LogAppListAdapter
 
 public class AllNotificationList {
     var title: String?= null

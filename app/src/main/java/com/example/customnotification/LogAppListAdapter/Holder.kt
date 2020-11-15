@@ -1,17 +1,13 @@
-package com.example.customnotification
+package com.example.customnotification.LogAppListAdapter
 
-import android.R.id.icon1
-import android.app.PendingIntent.getActivity
 import android.content.Context
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.customnotification.BitmapConverter
+import com.example.customnotification.LogDetailActivity
 import kotlinx.android.synthetic.main.list.view.*
 
 

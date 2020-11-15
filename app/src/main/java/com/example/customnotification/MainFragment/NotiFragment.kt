@@ -13,16 +13,14 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.customnotification.AllNotificationList
+import com.example.customnotification.LogAppListAdapter.AllNotificationList
 import com.example.customnotification.AppCache
-import com.example.customnotification.ListAdapter
+import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.R
 import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.fragment_noti.view.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -164,12 +162,17 @@ class NotiFragment : Fragment() {
 
 
         for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
-            val AllNotificationList = AllNotificationList()
+            val AllNotificationList =
+                AllNotificationList()
             AllNotificationList.title = AppCache.getString("title$i", "")
 
             AllNotificationList.text = AppCache.getString("text$i", "")
 
             AllNotificationList.bigtext = AppCache.getString("bigtext$i", "")
+
+            if(AppCache.getString("bigtext$i", "").equals("null")){
+                AllNotificationList.bigtext = ""
+            }
 
             AllNotificationList.date = AppCache.getString("date$i", "")
 
@@ -193,7 +196,11 @@ class NotiFragment : Fragment() {
 
         }
 
-        val ListAdapter = ListAdapter(arrayList,activity)
+        val ListAdapter =
+            ListAdapter(
+                arrayList,
+                activity
+            )
         noti_list.adapter = ListAdapter
         val lm = LinearLayoutManager(requireContext())
         noti_list.layoutManager = lm

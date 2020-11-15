@@ -52,7 +52,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             ).format(Calendar.getInstance().time)
             var subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
             //kakao profile picture
-            var picture   = extras.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
+            var picture = extras.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
             var picture1 = extras.get(Notification.EXTRA_PICTURE) as? Bitmap
             var picture2 = extras.get(Notification.EXTRA_SMALL_ICON) as? Bitmap
             var smallIconRes = extras.getInt(Notification.EXTRA_SMALL_ICON)
@@ -95,7 +95,6 @@ class MyNotificationListenerService : NotificationListenerService() {
                     bmp = getBitmapFromDrawable(da)
 
 
-
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -118,18 +117,19 @@ class MyNotificationListenerService : NotificationListenerService() {
             LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
 
 //            val pref = this.getPreferences(0)
-
+            if (text.equals(bigtext.toString())) {
+                bigtext =""
+//                Log.v("빅텍스트가 참임", bigtext)
+            }
             val list = AppCache(mContext)
             var arr = sbn.key.split("|")
             Log.v("배열", arr.toString())
 
             if (arr[1].equals("com.facebook.orca") && arr[2].equals("20001")) {
 
-            }
-            else if(arr[1].equals("com.kakao.talk") && arr[2].equals("1")){
+            } else if (arr[1].equals("com.kakao.talk") && arr[2].equals("1")) {
 
-            }
-            else if(text.equals("null")){
+            } else if (text.equals("null")) {
 
             }
 //            else if(text.equals("")){
@@ -142,7 +142,8 @@ class MyNotificationListenerService : NotificationListenerService() {
 //                msgrcv.putExtra("appname", appName)
 //            }
             else {
-                list.saveNotification(title, text,bigtext, date, bmp, appName,picture,picture1)
+
+                list.saveNotification(title, text, bigtext, date, bmp, appName, picture, picture1)
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)
@@ -184,8 +185,8 @@ class MyNotificationListenerService : NotificationListenerService() {
                 val byteArrayOutputStream =
                     ByteArrayOutputStream()
                 bmp!!.compress(CompressFormat.PNG, 100, byteArrayOutputStream)
-               var byteArrayS = byteArrayOutputStream.toByteArray()
-               var encoded = Base64.encodeToString(byteArrayS, Base64.DEFAULT)
+                var byteArrayS = byteArrayOutputStream.toByteArray()
+                var encoded = Base64.encodeToString(byteArrayS, Base64.DEFAULT)
                 val LOGCAT_MAX_LENGTH = 3950
                 if (BuildConfig.DEBUG) {
                     while (encoded.length > LOGCAT_MAX_LENGTH) {
