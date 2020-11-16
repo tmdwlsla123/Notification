@@ -15,6 +15,8 @@ import android.service.notification.StatusBarNotification
 import android.util.Base64
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.customnotification.EventBus.MessageEvent
+import org.greenrobot.eventbus.EventBus
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -88,7 +90,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             var da: Drawable? = null
             try {
                 remotePackageContext = applicationContext.createPackageContext(pack, 0)
-                icon = remotePackageContext.getResources().getDrawable(notificatin.smallIcon.resId)
+//                icon = remotePackageContext.getResources().getDrawable(notificatin.smallIcon.resId)
                 da = mContext.packageManager.getApplicationIcon(pack)
 
                 if (da != null) {
@@ -142,13 +144,14 @@ class MyNotificationListenerService : NotificationListenerService() {
 //                msgrcv.putExtra("appname", appName)
 //            }
             else {
-
+                Log.v("현재 타이틀",title)
                 list.saveNotification(title, text, bigtext, date, bmp, appName, picture, picture1)
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)
                 msgrcv.putExtra("icon", b)
                 msgrcv.putExtra("appname", appName)
+                EventBus.getDefault().post(MessageEvent("Hello everyone!"));
             }
 
 
@@ -158,14 +161,14 @@ class MyNotificationListenerService : NotificationListenerService() {
             Log.i("NotificationListener", "[snowdeer] EXTRA_MESSAGES:$test")
 
 
-//            Log.i("NotificationListener", "[snowdeer] Title:$title")
-//            Log.i("NotificationListener", "[snowdeer] Text:$text")
-//            Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
-//            Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
-//            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
-//            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_PICTURE)}")
-//            Log.i("NotificationListener", "[snowdeer] extras:${extras}")
-//            Log.i("NotificationListener", "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}")
+            Log.i("NotificationListener", "[snowdeer] Title:$title")
+            Log.i("NotificationListener", "[snowdeer] Text:$text")
+            Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
+            Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
+            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
+            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_PICTURE)}")
+            Log.i("NotificationListener", "[snowdeer] extras:${extras}")
+            Log.i("NotificationListener", "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}")
 
 
             if (extras != null) {

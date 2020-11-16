@@ -10,15 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.customnotification.LogAppListAdapter.AllNotificationList
 import com.example.customnotification.AppCache
+import com.example.customnotification.EventBus.MessageEvent
+import com.example.customnotification.LogAppListAdapter.AllNotificationList
 import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.R
 import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.fragment_noti.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,15 +49,19 @@ class NotiFragment : Fragment() {
     var arrayList = ArrayList<AllNotificationList>()
     val COUNT_KEY = "count_key"
     var mContext: Context? = null
+    var ListAdapter : ListAdapter?=null
+
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onAttach(context: Context) {
@@ -170,7 +179,7 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.bigtext = AppCache.getString("bigtext$i", "")
 
-            if(AppCache.getString("bigtext$i", "").equals("null")){
+            if (AppCache.getString("bigtext$i", "").equals("null")) {
                 AllNotificationList.bigtext = ""
             }
 
@@ -180,11 +189,13 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.appname = AppCache.getString("appname$i", "")
 
+            AllNotificationList.picture = AppCache.getString("picture$i", "")
+
 //            AllNotificationList.picture = AppCache.getString("picture$i", "0")
 
 //            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
 
-//            Log.v("arraylist", AppCache.getString("title$i", "0"))
+            Log.v("arraylist", AppCache.getString("title$i", "0"))
 //
 //            Log.v("arraylist", AppCache.getString("text$i", "0"))
 //
@@ -196,7 +207,7 @@ class NotiFragment : Fragment() {
 
         }
 
-        val ListAdapter =
+         ListAdapter =
             ListAdapter(
                 arrayList,
                 activity
@@ -205,7 +216,7 @@ class NotiFragment : Fragment() {
         val lm = LinearLayoutManager(requireContext())
         noti_list.layoutManager = lm
         noti_list.setHasFixedSize(true)
-        ListAdapter.notifyDataSetChanged()
+        ListAdapter!!.notifyDataSetChanged()
 //        Log.v("arraylist", AllNotificationList)
 
 
@@ -256,7 +267,8 @@ class NotiFragment : Fragment() {
         calendar.timeInMillis = datetime
         return formatter.format(calendar.time)
     }
-//    private fun start(){
+
+    //    private fun start(){
 //        var AppCache = AppCache(requireContext())
 //        for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
 //            val AllNotificationList = AllNotificationList()
@@ -291,4 +303,22 @@ class NotiFragment : Fragment() {
 //        noti_list.setHasFixedSize(true)
 //        ListAdapter.notifyDataSetChanged()
 //    }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MessageEvent) {
+        Log.v("변경됨",event.toString())
+
+        ListAdapter!!.notifyDataSetChanged()
+    }
 }

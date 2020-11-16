@@ -25,22 +25,23 @@ class LogDetailActivity : AppCompatActivity() {
 
         for (i in 1..AppCache.getInt(appname, 0)) {
             val AllNotificationList = AllNotificationList1()
-            AllNotificationList.title = AppCache.getString("${appname}_title$i", "0")
+            AllNotificationList.title = AppCache.getString("${appname}_title$i", "")
+            Log.v("현재시간",AppCache.getString("${appname}_title$i", ""))
 
-            AllNotificationList.text = AppCache.getString("${appname}_text$i", "0")
+            AllNotificationList.text = AppCache.getString("${appname}_text$i", "")
 
-            AllNotificationList.bigtext = AppCache.getString("${appname}_bigtext$i", "0")
+            AllNotificationList.bigtext = AppCache.getString("${appname}_bigtext$i", "")
             if(AppCache.getString("${appname}_bigtext$i", "0").equals("null")){
                 AllNotificationList.bigtext = ""
             }
 
-            AllNotificationList.date = AppCache.getString("${appname}_date$i", "0")
+            AllNotificationList.date = AppCache.getString("${appname}_date$i", "")
 
-            AllNotificationList.icon = AppCache.getString("icon$position", "0")
+            AllNotificationList.icon = AppCache.getString("icon$position", "")
 
-            AllNotificationList.appname = AppCache.getString("appname$position", "0")
+            AllNotificationList.appname = AppCache.getString("appname$position", "")
 
-            AllNotificationList.picture = AppCache.getString("${appname}_picture$i", "0")
+            AllNotificationList.picture = AppCache.getString("${appname}_picture$i", "")
 
 //            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
 

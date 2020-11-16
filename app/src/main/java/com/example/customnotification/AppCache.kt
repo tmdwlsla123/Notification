@@ -26,6 +26,7 @@ class AppCache(context: Context?) {
 
         var count = sharedPref.getInt(COUNT_KEY, 0)
         var log_count = sharedPref.getInt(appname, 0)
+        val picture_s = BitmapConverter().BitmapToString(picture)
 //        var i = 0
         for (i in 0..count) {
             Log.v("반복문", "실행횟수" + i)
@@ -37,13 +38,14 @@ class AppCache(context: Context?) {
                 sharedPref.edit().putString("text${i + 1}", text).apply()
                 sharedPref.edit().putString("bigtext${i + 1}", bigtext.toString()).apply()
                 sharedPref.edit().putString("date${i + 1}", date).apply()
+                sharedPref.edit().putString("picture${i + 1}", picture_s).apply()
 //                sharedPref.edit().putString("date${count}", date).apply()
 //                sharedPref.edit().putString("appname${count}", appname).apply()
 //                val image = BitmapConverter().BitmapToString(icon)
 //                sharedPref.edit().putString("icon$count", image).apply()
                 break;
             } else if (sharedPref.getString("appname${i + 1}", "").equals("")) {
-                Log.v("거짓", "기존에 앱 이름 과 일치 후 반복문 조료")
+                Log.v("거짓", "기존에 앱 이름 과 일치 하지않음 반복문 조료")
                 sharedPref.edit().putString("title${i + 1}", title).apply()
                 sharedPref.edit().putString("text${i + 1}", text).apply()
                 sharedPref.edit().putString("bigtext${i + 1}", bigtext.toString()).apply()
@@ -51,6 +53,7 @@ class AppCache(context: Context?) {
                 sharedPref.edit().putString("appname${i + 1}", appname).apply()
                 val image = BitmapConverter().BitmapToString(icon)
                 sharedPref.edit().putString("icon${i + 1}", image).apply()
+                sharedPref.edit().putString("picture${i + 1}", picture_s).apply()
 //                val picture_s = BitmapConverter().BitmapToString(picture)
 //                sharedPref.edit().putString("picture$count", picture_s).apply()
                 count++
@@ -68,9 +71,8 @@ class AppCache(context: Context?) {
 
 //                val image = BitmapConverter().BitmapToString(icon)
 //                sharedPref.edit().putString("${appname}_icon$log_count", image).apply()
-                val picture_s = BitmapConverter().BitmapToString(picture)
 //                val picture_ss = BitmapConverter().BitmapToString(picture1)
-                sharedPref.edit().putString("${appname}_picture${log_count + 1}", picture_s).apply()
+        sharedPref.edit().putString("${appname}_picture${log_count + 1}", picture_s).apply()
         log_count++
         sharedPref.edit().putInt(appname, log_count).apply()
 //                sharedPref.edit().putString("${appname}_picture1$log_count", picture_ss).apply()
