@@ -71,7 +71,7 @@
                     android:id="@+id/list_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/holo_red_dark"
                     android:includeFontPadding="false"
                     android:text="content"
 
@@ -80,6 +80,8 @@
                     android:id="@+id/list_bigtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:text="hihi"
                     android:includeFontPadding="false"
                     android:textSize="13sp" />
                 <ImageView

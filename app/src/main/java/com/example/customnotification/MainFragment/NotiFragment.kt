@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Collections.sort
 import kotlin.collections.ArrayList
 
 
@@ -49,9 +50,7 @@ class NotiFragment : Fragment() {
     var arrayList = ArrayList<AllNotificationList>()
     val COUNT_KEY = "count_key"
     var mContext: Context? = null
-    var ListAdapter : ListAdapter?=null
-
-
+    var ListAdapter: ListAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +82,6 @@ class NotiFragment : Fragment() {
             SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(currentDateTime)
         noti_search.textView2.text = dateFormat1
 
-        var AppCache = AppCache(requireContext())
 
 //        Log.v("NotiNumber", AppCache.getAll().toString())
 //        Log.v("NotiNumber", AppCache.getAll().toString())
@@ -170,53 +168,7 @@ class NotiFragment : Fragment() {
 //        //클릭
 
 
-        for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
-            val AllNotificationList =
-                AllNotificationList()
-            AllNotificationList.title = AppCache.getString("title$i", "")
-
-            AllNotificationList.text = AppCache.getString("text$i", "")
-
-            AllNotificationList.bigtext = AppCache.getString("bigtext$i", "")
-
-            if (AppCache.getString("bigtext$i", "").equals("null")) {
-                AllNotificationList.bigtext = ""
-            }
-
-            AllNotificationList.date = AppCache.getString("date$i", "")
-
-            AllNotificationList.icon = AppCache.getString("icon$i", "")
-
-            AllNotificationList.appname = AppCache.getString("appname$i", "")
-
-            AllNotificationList.picture = AppCache.getString("picture$i", "")
-
-//            AllNotificationList.picture = AppCache.getString("picture$i", "0")
-
-//            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
-
-            Log.v("arraylist", AppCache.getString("title$i", "0"))
-//
-//            Log.v("arraylist", AppCache.getString("text$i", "0"))
-//
-//            Log.v("arraylist", AppCache.getString("date$i", "0"))
-
-//            Log.v("arraylist", AppCache.getString("icon$i", "0"))
-            arrayList.add(0, AllNotificationList)
-
-
-        }
-
-         ListAdapter =
-            ListAdapter(
-                arrayList,
-                activity
-            )
-        noti_list.adapter = ListAdapter
-        val lm = LinearLayoutManager(requireContext())
-        noti_list.layoutManager = lm
-        noti_list.setHasFixedSize(true)
-        ListAdapter!!.notifyDataSetChanged()
+        for_list()
 //        Log.v("arraylist", AllNotificationList)
 
 
@@ -317,8 +269,64 @@ class NotiFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
-        Log.v("변경됨",event.toString())
+        Log.v("변경됨", event.toString())
+        for_list()
 
+    }
+
+    fun for_list() {
+        arrayList.clear()
+        var AppCache = AppCache(requireContext())
+        var sort = AppCache.getSort()
+                Log.v("시간값 앱별로 출력", AppCache.getSort().toString())
+
+        for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
+            val AllNotificationList =
+                AllNotificationList()
+            AllNotificationList.title = AppCache.getString("title${sort[i - 1]}", "")
+
+            AllNotificationList.text = AppCache.getString("text${sort[i - 1]}", "")
+
+            AllNotificationList.bigtext = AppCache.getString("bigtext${sort[i - 1]}", "")
+
+            if (AppCache.getString("bigtext${sort[i - 1]}", "").equals("null")) {
+                AllNotificationList.bigtext = ""
+            }
+
+            AllNotificationList.date = AppCache.getString("date${sort[i - 1]}", "")
+
+            AllNotificationList.icon = AppCache.getString("icon${sort[i - 1]}", "")
+
+            AllNotificationList.appname = AppCache.getString("appname${sort[i - 1]}", "")
+
+            AllNotificationList.picture = AppCache.getString("picture${sort[i - 1]}", "")
+
+//            AllNotificationList.picture = AppCache.getString("picture$i", "0")
+
+//            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
+
+            Log.v("arraylist", AppCache.getString("title${sort[i - 1]}", "0"))
+//
+//            Log.v("arraylist", AppCache.getString("text$i", "0"))
+//
+//            Log.v("arraylist", AppCache.getString("date$i", "0"))
+
+//            Log.v("arraylist", AppCache.getString("icon$i", "0"))
+
+            arrayList.add(0, AllNotificationList)
+
+
+        }
+
+        ListAdapter =
+            ListAdapter(
+                arrayList,
+                activity
+            )
+        noti_list.adapter = ListAdapter
+        val lm = LinearLayoutManager(requireContext())
+        noti_list.layoutManager = lm
+        noti_list.setHasFixedSize(true)
         ListAdapter!!.notifyDataSetChanged()
     }
 }

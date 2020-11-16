@@ -3,8 +3,11 @@ package com.example.customnotification
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.Picture
 import android.util.Log
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class AppCache(context: Context?) {
@@ -119,6 +122,37 @@ class AppCache(context: Context?) {
 
     fun clear() {
         sharedPref.edit().clear().apply()
+    }
+    fun getSort(): ArrayList<Int>{
+        var count = sharedPref.getInt(COUNT_KEY, 0)
+
+        var arraylist: HashMap<String,Int> = HashMap()
+        for(i in 0 .. count-1){
+            Log.v("시간값 앱별로 출력",sharedPref.getString("date${i+1}",""))
+            var date1: Date = SimpleDateFormat("yyyy.MM.dd HH:mm",
+                Locale.KOREA).parse(sharedPref.getString("date${i+1}",""))
+           arraylist.put(sharedPref.getString("date${i+1}","")!!,i)
+        }
+//
+        val sortedMap = arraylist.toSortedMap(compareByDescending { it })
+        Log.v("소트맵",sortedMap.toString())
+        val tm: TreeMap<String,Int> = TreeMap<String,Int>(arraylist)
+
+
+        val iteratorKey: Iterator<String> =
+            tm.keys.iterator() //키값 오름차순 정렬(기본)
+
+
+
+        var keylist: ArrayList<Int> = ArrayList()
+        while (iteratorKey.hasNext()) {
+            val key = iteratorKey.next()
+            Log.v("출력",key.toString()+","+tm.get(key))
+
+            keylist.add(tm.get(key)!!.plus(1))
+        }
+        return keylist
+
     }
 
 }
