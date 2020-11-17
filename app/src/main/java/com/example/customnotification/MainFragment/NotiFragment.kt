@@ -303,6 +303,8 @@ class NotiFragment : Fragment() {
 
             AllNotificationList.picture = AppCache.getString("picture${k[i-1]}", "")
 
+            AllNotificationList.position = k[i-1]
+
 //            AllNotificationList.picture = AppCache.getString("picture$i", "0")
 
 //            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")

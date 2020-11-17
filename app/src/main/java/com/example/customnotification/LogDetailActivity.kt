@@ -20,7 +20,7 @@ class LogDetailActivity : AppCompatActivity() {
 
         var AppCache = AppCache(this)
         var app_count = AppCache.getInt(COUNT_KEY,0)
-        var position = app_count-intent.getIntExtra("position",0)
+        var position = intent.getIntExtra("position",0)
         Log.v("인텐트 포지션",position.toString())
 
         for (i in 1..AppCache.getInt(appname, 0)) {

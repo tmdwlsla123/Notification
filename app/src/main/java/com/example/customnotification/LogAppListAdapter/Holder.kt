@@ -26,7 +26,7 @@ class Holder(v: View,c: Context?) : RecyclerView.ViewHolder(v){
             Log.v("포지션",position.toString())
             val nextIntent = Intent(context, LogDetailActivity::class.java)
             nextIntent.putExtra("appname",item.appname)
-            nextIntent.putExtra("position",position)
+            nextIntent.putExtra("position",item.position!!.toInt())
             context!!.startActivity(nextIntent)
         }
         var picture = BitmapConverter().StringToBitmap(item.picture)
