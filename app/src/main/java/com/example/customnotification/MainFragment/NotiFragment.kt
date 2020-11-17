@@ -277,35 +277,37 @@ class NotiFragment : Fragment() {
     fun for_list() {
         arrayList.clear()
         var AppCache = AppCache(requireContext())
-        var sort = AppCache.getSort()
+
                 Log.v("시간값 앱별로 출력", AppCache.getSort().toString())
+        Log.v("카운트 키", AppCache.getInt(COUNT_KEY, 0).toString())
+        var k = AppCache.dummy()
 
         for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
             val AllNotificationList =
                 AllNotificationList()
-            AllNotificationList.title = AppCache.getString("title${sort[i - 1]}", "")
+            AllNotificationList.title = AppCache.getString("title${k[i-1]}", "")
 
-            AllNotificationList.text = AppCache.getString("text${sort[i - 1]}", "")
+            AllNotificationList.text = AppCache.getString("text${k[i-1]}", "")
 
-            AllNotificationList.bigtext = AppCache.getString("bigtext${sort[i - 1]}", "")
+            AllNotificationList.bigtext = AppCache.getString("bigtext${k[i-1]}", "")
 
-            if (AppCache.getString("bigtext${sort[i - 1]}", "").equals("null")) {
+            if (AppCache.getString("bigtext${k[i-1]}", "").equals("null")) {
                 AllNotificationList.bigtext = ""
             }
 
-            AllNotificationList.date = AppCache.getString("date${sort[i - 1]}", "")
+            AllNotificationList.date = AppCache.getString("date${k[i-1]}", "")
 
-            AllNotificationList.icon = AppCache.getString("icon${sort[i - 1]}", "")
+            AllNotificationList.icon = AppCache.getString("icon${k[i-1]}", "")
 
-            AllNotificationList.appname = AppCache.getString("appname${sort[i - 1]}", "")
+            AllNotificationList.appname = AppCache.getString("appname${k[i-1]}", "")
 
-            AllNotificationList.picture = AppCache.getString("picture${sort[i - 1]}", "")
+            AllNotificationList.picture = AppCache.getString("picture${k[i-1]}", "")
 
 //            AllNotificationList.picture = AppCache.getString("picture$i", "0")
 
 //            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
 
-            Log.v("arraylist", AppCache.getString("title${sort[i - 1]}", "0"))
+            Log.v("arraylist", AppCache.getString("title${k[i-1]}", "0"))
 //
 //            Log.v("arraylist", AppCache.getString("text$i", "0"))
 //

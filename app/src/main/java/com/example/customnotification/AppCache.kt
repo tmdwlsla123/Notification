@@ -12,9 +12,13 @@ import kotlin.collections.HashMap
 
 class AppCache(context: Context?) {
     private val PREF = "notificationApp"
+    private val sort = "sort"
     private val COUNT_KEY = "count_key"
+    private val SORT_APP_DATA = "count_sort_key"
     private val sharedPref: SharedPreferences =
         context!!.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+    private val sharedPref_sort: SharedPreferences =
+        context!!.getSharedPreferences(sort, Context.MODE_PRIVATE)
 
     fun saveNotification(
         title: String?,
@@ -30,6 +34,7 @@ class AppCache(context: Context?) {
         var count = sharedPref.getInt(COUNT_KEY, 0)
         var log_count = sharedPref.getInt(appname, 0)
         val picture_s = BitmapConverter().BitmapToString(picture)
+        var sort_app_data = sharedPref.getInt(SORT_APP_DATA, 0)
 //        var i = 0
         for (i in 0..count) {
             Log.v("반복문", "실행횟수" + i)
@@ -64,13 +69,20 @@ class AppCache(context: Context?) {
             }
 
         }
+        //앱별 데이터를 정렬하기 위한 플래그 설정
+        sort_app_data++
+        //앱별로 데이터의 입력 순서를 카운트로 보유
+        sharedPref_sort.edit().putInt(appname, sort_app_data).apply()
+        //데이터를 받을때마다 1씩 증가하는 데이터 추가
+        sharedPref.edit().putInt(SORT_APP_DATA, sort_app_data).apply()
 
         sharedPref.edit().putInt(COUNT_KEY, count).apply()
 
         sharedPref.edit().putString("${appname}_title${log_count + 1}", title).apply()
         sharedPref.edit().putString("${appname}_text${log_count + 1}", text).apply()
         sharedPref.edit().putString("${appname}_date${log_count + 1}", date).apply()
-        sharedPref.edit().putString("${appname}_bigtext${log_count + 1}", bigtext.toString()).apply()
+        sharedPref.edit().putString("${appname}_bigtext${log_count + 1}", bigtext.toString())
+            .apply()
 
 //                val image = BitmapConverter().BitmapToString(icon)
 //                sharedPref.edit().putString("${appname}_icon$log_count", image).apply()
@@ -122,32 +134,35 @@ class AppCache(context: Context?) {
 
     fun clear() {
         sharedPref.edit().clear().apply()
+        sharedPref_sort.edit().clear().apply()
     }
-    fun getSort(): ArrayList<Int>{
+
+    fun getSort(): ArrayList<Int> {
         var count = sharedPref.getInt(COUNT_KEY, 0)
 
-        var arraylist: HashMap<String,Int> = HashMap()
-        for(i in 0 .. count-1){
-            Log.v("시간값 앱별로 출력",sharedPref.getString("date${i+1}",""))
-            var date1: Date = SimpleDateFormat("yyyy.MM.dd HH:mm",
-                Locale.KOREA).parse(sharedPref.getString("date${i+1}",""))
-           arraylist.put(sharedPref.getString("date${i+1}","")!!,i)
+        var arraylist: HashMap<String, Int> = HashMap()
+        for (i in 0..count - 1) {
+//            Log.v("시간값 앱별로 출력",sharedPref.getString("date${i+1}",""))
+            var date1: Date = SimpleDateFormat(
+                "yyyy.MM.dd HH:mm",
+                Locale.KOREA
+            ).parse(sharedPref.getString("date${i + 1}", ""))
+            arraylist.put(sharedPref.getString("date${i + 1}", "")!!, i)
         }
 //
-        val sortedMap = arraylist.toSortedMap(compareByDescending { it })
-        Log.v("소트맵",sortedMap.toString())
-        val tm: TreeMap<String,Int> = TreeMap<String,Int>(arraylist)
+//        val sortedMap = arraylist.toSortedMap()
+//        Log.v("소트맵",sortedMap.toString())
+        val tm: TreeMap<String, Int> = TreeMap<String, Int>(arraylist)
 
 
         val iteratorKey: Iterator<String> =
             tm.keys.iterator() //키값 오름차순 정렬(기본)
 
 
-
         var keylist: ArrayList<Int> = ArrayList()
         while (iteratorKey.hasNext()) {
             val key = iteratorKey.next()
-            Log.v("출력",key.toString()+","+tm.get(key))
+            Log.v("출력", key.toString() + "," + tm.get(key))
 
             keylist.add(tm.get(key)!!.plus(1))
         }
@@ -155,4 +170,38 @@ class AppCache(context: Context?) {
 
     }
 
+    fun dummy() : ArrayList<String>{
+        var all: Map<String, *> = sharedPref_sort.all
+        var sort_data: HashMap<Int, String> = HashMap()
+        for ((key, value) in all.entries) {
+            Log.d("map values", key + ": " + value.toString())
+            sort_data.put(value as Int, key)
+        }
+        Log.v("해시", sort_data.toString())
+        //역으로 정렬
+        var r = sort_data.toSortedMap(compareByDescending { it })
+        sort_data.clear()
+        var arr : ArrayList<String> = ArrayList()
+        for ((value, key) in r.entries) {
+//            Log.d("map values", key + ": " + value.toString())
+//           Log.v("키 찾기",findkey(key))
+            arr.add(findkey(key))
+            //첫번째 인자: value = 패키지 순서 번호 , 두번째 인자: key = 패키지 이름
+//            sort_data.put(findkey(key).toInt(),key)
+        }
+        Log.v("해시 번호", sort_data.toString())
+        Collections.reverse(arr)
+        return arr
+
+    }
+
+    fun findkey(value1: String): String {
+        sharedPref.all.entries
+        for ((key, value) in sharedPref.all.entries) {
+            if (value!!.equals(value1)) {
+                return key.replace("[^0-9]".toRegex(), "")
+            }
+        }
+        return "0"
+    }
 }
