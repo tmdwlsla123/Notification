@@ -138,6 +138,9 @@ class MyNotificationListenerService : NotificationListenerService() {
             } else if (text.equals("null")) {
 
             }
+                else if(arr[1].equals("com.google.android.googlequicksearchbox")){
+
+            }
 //            else if(text.equals("")){
 //                var bigtext = extras.getString(Notification.EXTRA_BIG_TEXT)
 //                list.saveNotification(title, bigtext, date, bmp, appName,picture,picture1)
