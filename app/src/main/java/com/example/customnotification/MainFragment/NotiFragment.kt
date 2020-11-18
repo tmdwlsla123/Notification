@@ -281,6 +281,7 @@ class NotiFragment : Fragment() {
         Log.v("시간값 앱별로 출력", AppCache.getSort().toString())
         Log.v("카운트 키", AppCache.getInt(COUNT_KEY, 0).toString())
         var k = AppCache.dummy()
+        Log.v("배열에 뭐들어있음?", k.toString())
 
         for (i in 1..AppCache.getInt(COUNT_KEY, 0)) {
             val AllNotificationList =
@@ -309,7 +310,8 @@ class NotiFragment : Fragment() {
 
 //            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
 
-            Log.v("arraylist", AppCache.getString("appname${k[i - 1]}", "0"))
+            Log.v("arraylist", "appname : "+AppCache.getString("appname${k[i - 1]}", "0")+"i : "+i)
+
 //
 //            Log.v("arraylist", AppCache.getString("text$i", "0"))
 //

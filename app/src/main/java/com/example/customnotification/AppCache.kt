@@ -39,7 +39,7 @@ class AppCache(context: Context?) {
         for (i in 0..count) {
             Log.v("반복문", "실행횟수" + i)
             Log.v("반복문", "count" + count)
-            Log.v("반복문", "$appname=" + sharedPref.getString("appname$i", ""))
+            Log.v("반복문", "$appname=" + sharedPref.getString("appname${i + 1}", ""))
             if (sharedPref.getString("appname${i + 1}", "").equals(appname)) {
                 Log.v("참", "기존에 앱 이름 과 일치 후 반복문 조료")
                 sharedPref.edit().putString("title${i + 1}", title).apply()
@@ -185,7 +185,7 @@ class AppCache(context: Context?) {
         for ((value, key) in r.entries) {
 //            Log.d("map values", key + ": " + value.toString())
 //           Log.v("키 찾기",findkey(key))
-            arr.add(findkey(key))
+            arr.add(findkey1(key))
             //첫번째 인자: value = 패키지 순서 번호 , 두번째 인자: key = 패키지 이름
 //            sort_data.put(findkey(key).toInt(),key)
         }
@@ -196,12 +196,21 @@ class AppCache(context: Context?) {
     }
 
     fun findkey(value1: String): String {
-        sharedPref.all.entries
         for ((key, value) in sharedPref.all.entries) {
+//            Log.v("findkey함수실행","누적")
             if (value!!.equals(value1)) {
+                Log.v("findkey함수실행","key : "+ key)
                 return key.replace("[^0-9]".toRegex(), "")
             }
         }
         return "0"
+    }
+    fun findkey1(value1: String):String{
+        var count = sharedPref.getInt(COUNT_KEY, 0)
+        var hash : HashMap<String?,Int> = HashMap()
+        for (i in 1..count){
+            hash.put(sharedPref.getString("appname"+i,""),i)
+        }
+        return hash.get(value1).toString()
     }
 }
