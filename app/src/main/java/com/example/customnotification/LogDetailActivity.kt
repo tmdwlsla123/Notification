@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customnotification.LogDetailAdapter.AllNotificationList1
 import com.example.customnotification.LogDetailAdapter.ListAdapter1
+import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.recyleview.*
 
 class LogDetailActivity : AppCompatActivity() {
@@ -15,7 +16,6 @@ class LogDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_detail)
         var appname = intent.getStringExtra("appname")
-
         Log.v("인텐트 앱네임",appname)
 
         var AppCache = AppCache(this)

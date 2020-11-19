@@ -120,7 +120,7 @@ class NotiFragment : Fragment() {
         }
 
         var map: Map<String, *> = AppCache(context).getAll()
-
+//        search_button.setOnClickListener {  }
 //        //클릭
 //        noti_search.search_button.setOnClickListener {
 //            arrayList.clear()
