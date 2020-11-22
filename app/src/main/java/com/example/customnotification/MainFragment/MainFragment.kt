@@ -1,4 +1,4 @@
-package com.example.customnotification.MainFragment
+    package com.example.customnotification.MainFragment
 
 import android.content.BroadcastReceiver
 import android.content.Context
