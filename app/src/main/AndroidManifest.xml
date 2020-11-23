@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogDetailActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".LogDetailActivity" />
 
         <receiver
             android:name=".receiver.BroadCastReceiver"
@@ -28,7 +29,8 @@
         <activity
             android:name=".LockScreenActivity"
             android:theme="@style/Transparent" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

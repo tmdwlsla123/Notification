@@ -2,6 +2,7 @@ package com.example.customnotification.MainFragment
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import com.example.customnotification.EventBus.MessageEvent
 import com.example.customnotification.LogAppListAdapter.AllNotificationList
 import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.R
+import com.example.customnotification.SearchActivity
 import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.fragment_noti.view.*
 import org.greenrobot.eventbus.EventBus
@@ -120,10 +122,14 @@ class NotiFragment : Fragment() {
         }
 
         var map: Map<String, *> = AppCache(context).getAll()
+        //오류 내기 전용 코드
 //        search_button.setOnClickListener {  }
-//        //클릭
-//        noti_search.search_button.setOnClickListener {
+        //클릭
+        noti_search.search_button.setOnClickListener {
+            var intent = Intent(mContext, SearchActivity::class.java)
+            startActivity(intent)
 //            arrayList.clear()
+//            var AppCache = AppCache(requireContext())
 //            var search_value = noti_search.search_noti.text.toString()
 //            val search_map: ArrayList<String> = ArrayList()
 ////            Log.v("흠",search_map.toString())
@@ -151,7 +157,7 @@ class NotiFragment : Fragment() {
 ////                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
 //                    arrayList.add(0, AllNotificationList)
 //                }
-//                val ListAdapter = ListAdapter(arrayList)
+//                val ListAdapter = ListAdapter(arrayList,activity)
 //                noti_list.adapter = ListAdapter
 //                val lm = LinearLayoutManager(requireContext())
 //                noti_list.layoutManager = lm
@@ -159,12 +165,12 @@ class NotiFragment : Fragment() {
 //                ListAdapter.notifyDataSetChanged()
 //            }
 //            else{
-//                start()
+//// //               start()
 //            }
 //
 ////            Log.v("흠",search_map.get(1).length.toString())
 ////            Log.v("흠",search_map.size.toString())
-//        }
+        }
 //        //클릭
 
 

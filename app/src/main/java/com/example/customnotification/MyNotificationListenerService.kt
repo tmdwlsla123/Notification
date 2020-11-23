@@ -19,6 +19,8 @@ import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.customnotification.EventBus.MessageEvent
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
 import org.greenrobot.eventbus.EventBus
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -49,7 +51,8 @@ class MyNotificationListenerService : NotificationListenerService() {
 
             var extras: Bundle = notificatin.extras
             var bigtext = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)
-            var title = extras.getString(Notification.EXTRA_TITLE)
+//            var title? = null
+            var title = extras?.getString(Notification.EXTRA_TITLE)
             var text = extras.getCharSequence(Notification.EXTRA_TEXT).toString()
             var date = SimpleDateFormat(
                 "yyyy.MM.dd HH:mm",
@@ -124,7 +127,7 @@ class MyNotificationListenerService : NotificationListenerService() {
 
 //            val pref = this.getPreferences(0)
             if (text.equals(bigtext.toString())) {
-                bigtext =""
+                bigtext = ""
 //                Log.v("빅텍스트가 참임", bigtext)
             }
             val list = AppCache(mContext)
@@ -133,12 +136,19 @@ class MyNotificationListenerService : NotificationListenerService() {
 
             if (arr[1].equals("com.facebook.orca") && arr[2].equals("20001")) {
 
-            } else if (arr[1].equals("com.kakao.talk") && extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString().orEmpty().contains("안 읽은 메시지")) {
-                Log.v("안읽은메시지",extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.contains("안 읽은 메시지").toString())
+            } else if (arr[1].equals("com.kakao.talk") && extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
+                    ?.toString().orEmpty().contains("안 읽은 메시지")
+            ) {
+                Log.v(
+                    "안읽은메시지",
+                    extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.contains("안 읽은 메시지")
+                        .toString()
+                )
             } else if (text.equals("null")) {
 
-            }
-                else if(arr[1].equals("com.google.android.googlequicksearchbox")){
+            } else if (arr[1].equals("com.google.android.googlequicksearchbox")) {
+
+            } else if (title==null) {
 
             }
 //            else if(text.equals("")){
@@ -151,18 +161,25 @@ class MyNotificationListenerService : NotificationListenerService() {
 //                msgrcv.putExtra("appname", appName)
 //            }
             else {
-                if(extras.get(Notification.EXTRA_LARGE_ICON).toString().contains("Icon")){
-                    Log.v("아이콘포함","ㄹㅇ")
-                    var drawable : Icon= extras.get(Notification.EXTRA_LARGE_ICON) as Icon
+                if (extras.get(Notification.EXTRA_LARGE_ICON).toString().contains("Icon")) {
+                    Log.v("아이콘포함", "ㄹㅇ")
+                    var drawable: Icon = extras.get(Notification.EXTRA_LARGE_ICON) as Icon
 
 
-                    Log.v("아이콘포함",drawable.loadDrawable(applicationContext).toString())
-                    val bitmapIcon =drawable.loadDrawable(applicationContext).toBitmap()
+                    Log.v("아이콘포함", drawable.loadDrawable(applicationContext).toString())
+                    val bitmapIcon = drawable.loadDrawable(applicationContext).toBitmap()
                     picture = bitmapIcon
-                    Log.v("아이콘포함",bitmapIcon.toString())
+                    Log.v("아이콘포함", bitmapIcon.toString())
                 }
-                Log.v("안읽은메시지",extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString().orEmpty().contains("안 읽은 메시지").toString())
-                Log.v("현재 타이틀",title)
+//                var crashtics = FirebaseCrashlytics.getInstance()
+//                crashtics.setCustomKey("package", extras.toString())
+//                crashtics.log(extras.toString())
+                Log.v(
+                    "안읽은메시지",
+                    extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString().orEmpty()
+                        .contains("안 읽은 메시지").toString()
+                )
+                Log.v("현재 타이틀", title)
                 list.saveNotification(title, text, bigtext, date, bmp, appName, picture, picture1)
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
@@ -183,12 +200,24 @@ class MyNotificationListenerService : NotificationListenerService() {
             Log.i("NotificationListener", "[snowdeer] Text:$text")
             Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
             Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
-            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}")
-            Log.i("NotificationListener", "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)?.javaClass?.name}")
+            Log.i(
+                "NotificationListener",
+                "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}"
+            )
+            Log.i(
+                "NotificationListener",
+                "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)?.javaClass?.name}"
+            )
 
-            Log.i("NotificationListener", "[snowdeer] picture:${extras.getInt(Notification.EXTRA_LARGE_ICON_BIG)}")
+            Log.i(
+                "NotificationListener",
+                "[snowdeer] picture:${extras.getInt(Notification.EXTRA_LARGE_ICON_BIG)}"
+            )
             Log.i("NotificationListener", "[snowdeer] extras:${extras}")
-            Log.i("NotificationListener", "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}")
+            Log.i(
+                "NotificationListener",
+                "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}"
+            )
 
 
             if (extras != null) {
