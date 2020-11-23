@@ -157,7 +157,7 @@ class NotiFragment : Fragment() {
 ////                    Log.v("arraylist", AppCache.getString("text${search_map[i]}", "0"))
 //                    arrayList.add(0, AllNotificationList)
 //                }
-//                val ListAdapter = ListAdapter(arrayList,activity)
+//                val ListAdapter = ListAdapter(arrayList)
 //                noti_list.adapter = ListAdapter
 //                val lm = LinearLayoutManager(requireContext())
 //                noti_list.layoutManager = lm
@@ -165,7 +165,7 @@ class NotiFragment : Fragment() {
 //                ListAdapter.notifyDataSetChanged()
 //            }
 //            else{
-//// //               start()
+//                start()
 //            }
 //
 ////            Log.v("흠",search_map.get(1).length.toString())

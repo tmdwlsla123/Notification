@@ -18,6 +18,9 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.customnotification.DataBase.AppDB
+import com.example.customnotification.DataBase.AppName
+import com.example.customnotification.DataBase.DAO
 import com.example.customnotification.EventBus.MessageEvent
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
@@ -33,6 +36,8 @@ import java.util.*
 @SuppressLint("OverrideAbstract")
 class MyNotificationListenerService : NotificationListenerService() {
     var mContext: Context = this
+    var db : AppDB? = null
+    var contactsList = mutableListOf<AppName>()
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.e("kobbi", "MyNotificationListener.onListenerConnected()")
@@ -80,6 +85,11 @@ class MyNotificationListenerService : NotificationListenerService() {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
+            db = AppDB.getInstance(mContext)
+//            db!!.DAO().deleteAll_app_name()
+            var name_class = AppName(null,appName,"null")
+            db!!.DAO().insertAll_app_name(name_class)
+            Log.v("데이터베이스",db!!.DAO().getAll_app_name().toString())
             val bitmap = getBitmapFromDrawable(appIcon!!)
 
 //            Log.v("아이콘",smallIconRes.toString())
