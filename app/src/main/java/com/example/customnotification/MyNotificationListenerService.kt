@@ -85,11 +85,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            db = AppDB.getInstance(mContext)
-//            db!!.DAO().deleteAll_app_name()
-            var name_class = AppName(null,appName,"null")
-            db!!.DAO().insertAll_app_name(name_class)
-            Log.v("데이터베이스",db!!.DAO().getAll_app_name().toString())
+
             val bitmap = getBitmapFromDrawable(appIcon!!)
 
 //            Log.v("아이콘",smallIconRes.toString())
@@ -189,6 +185,11 @@ class MyNotificationListenerService : NotificationListenerService() {
                     extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString().orEmpty()
                         .contains("안 읽은 메시지").toString()
                 )
+                db = AppDB.getInstance(mContext)
+//            db!!.DAO().deleteAll_app_name()
+                var name_class = AppName(null,appName,"null")
+                db!!.DAO().insertAll_app_name(name_class)
+                Log.v("데이터베이스",db!!.DAO().getAll_app_name().toString())
                 Log.v("현재 타이틀", title)
                 list.saveNotification(title, text, bigtext, date, bmp, appName, picture, picture1)
                 msgrcv.putExtra("title", title)
