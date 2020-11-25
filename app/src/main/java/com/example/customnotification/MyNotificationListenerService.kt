@@ -3,6 +3,7 @@ package com.example.customnotification
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Bundle
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -19,16 +21,14 @@ import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.customnotification.DataBase.AppDB
+import com.example.customnotification.DataBase.AppDetail
 import com.example.customnotification.DataBase.AppName
 import com.example.customnotification.DataBase.DAO
 import com.example.customnotification.EventBus.MessageEvent
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import org.greenrobot.eventbus.EventBus
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -187,9 +187,17 @@ class MyNotificationListenerService : NotificationListenerService() {
                 )
                 db = AppDB.getInstance(mContext)
 //            db!!.DAO().deleteAll_app_name()
-                var name_class = AppName(null,appName,"null")
-                db!!.DAO().insertAll_app_name(name_class)
+                var name_class = AppName(null,appName,appName+".jpg")
+                if(!db!!.DAO().isRowIsExist(appName)){
+                    db!!.DAO().insertAll_app_name(name_class)
+                    Log.v("이미지경로",bitmapToFile(bmp!!,appName).toString())
+
+                }
+
+                var detail_class = AppDetail(null,appName,title,text,bigtext.toString(),date,bitmapToFile(picture!!).toString())
+                db!!.DAO().insertAll_app_detail(detail_class)
                 Log.v("데이터베이스",db!!.DAO().getAll_app_name().toString())
+                Log.v("데이터베이스",db!!.DAO().getAll_app_detail()[0].name)
                 Log.v("현재 타이틀", title)
                 list.saveNotification(title, text, bigtext, date, bmp, appName, picture, picture1)
                 msgrcv.putExtra("title", title)
@@ -206,29 +214,6 @@ class MyNotificationListenerService : NotificationListenerService() {
             var test = sbn.notification
             Log.i("NotificationListener", "[snowdeer] EXTRA_MESSAGES:$test")
 
-
-            Log.i("NotificationListener", "[snowdeer] Title:$title")
-            Log.i("NotificationListener", "[snowdeer] Text:$text")
-            Log.i("NotificationListener", "[snowdeer] Sub Text:$subText")
-            Log.i("NotificationListener", "[snowdeer] Appname:${appName.toString()}")
-            Log.i(
-                "NotificationListener",
-                "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)}"
-            )
-            Log.i(
-                "NotificationListener",
-                "[snowdeer] picture:${extras.get(Notification.EXTRA_LARGE_ICON)?.javaClass?.name}"
-            )
-
-            Log.i(
-                "NotificationListener",
-                "[snowdeer] picture:${extras.getInt(Notification.EXTRA_LARGE_ICON_BIG)}"
-            )
-            Log.i("NotificationListener", "[snowdeer] extras:${extras}")
-            Log.i(
-                "NotificationListener",
-                "[snowdeer] wearable:${extras.get("android.wearable.EXTENSIONS").toString()}"
-            )
 
 
             if (extras != null) {
@@ -288,5 +273,48 @@ class MyNotificationListenerService : NotificationListenerService() {
             e.printStackTrace()
         }
     }
+    private fun bitmapToFile(bitmap:Bitmap , imagename: String): Uri {
+        // Get the context wrapper
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initialize a new file instance to save bitmap object
+        var file = wrapper.getDir("Images",Context.MODE_PRIVATE)
+        file = File(file,"${imagename}.jpg")
+
+        try{
+            // Compress the bitmap and save in jpg format
+            val stream:OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+            stream.flush()
+            stream.close()
+        }catch (e: IOException){
+            e.printStackTrace()
+        }
+
+        // Return the saved bitmap uri
+        return Uri.parse(file.absolutePath)
+    }
+    private fun bitmapToFile(bitmap:Bitmap): Uri {
+        // Get the context wrapper
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initialize a new file instance to save bitmap object
+        var file = wrapper.getDir("Images",Context.MODE_PRIVATE)
+        file = File(file,"${UUID.randomUUID()}.jpg")
+
+        try{
+            // Compress the bitmap and save in jpg format
+            val stream:OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+            stream.flush()
+            stream.close()
+        }catch (e:IOException){
+            e.printStackTrace()
+        }
+
+        // Return the saved bitmap uri
+        return Uri.parse(file.name)
+    }
+
 
 }

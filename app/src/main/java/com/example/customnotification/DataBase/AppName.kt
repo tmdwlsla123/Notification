@@ -2,6 +2,7 @@ package com.example.customnotification.DataBase
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "app_name")
