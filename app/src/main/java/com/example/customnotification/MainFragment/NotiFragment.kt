@@ -13,15 +13,19 @@ import android.widget.DatePicker
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customnotification.AppCache
 import com.example.customnotification.DataBase.AppDB
+import com.example.customnotification.DataBase.AppName
 import com.example.customnotification.EventBus.MessageEvent
 import com.example.customnotification.LogAppListAdapter.AllNotificationList
 import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.R
 import com.example.customnotification.SearchActivity
+import com.example.customnotification.ViewModel.ContactViewModel
 import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.fragment_noti.view.*
 import org.greenrobot.eventbus.EventBus
@@ -31,6 +35,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Collections.sort
+
 import kotlin.collections.ArrayList
 
 
@@ -48,14 +53,14 @@ class NotiFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var noti_list: RecyclerView
+    lateinit var noti_list_recyclerView: RecyclerView
     lateinit var noti_search: LinearLayout
     var arrayList = ArrayList<AllNotificationList>()
     val COUNT_KEY = "count_key"
     var mContext: Context? = null
     var ListAdapter: ListAdapter? = null
-    var db : AppDB? = null
-
+    var db: AppDB? = null
+    private lateinit var contactViewModel: ContactViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +83,7 @@ class NotiFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var listItems: View = inflater.inflate(R.layout.fragment_noti, container, false)
-        noti_list = listItems.findViewById<View>(R.id.noti_list) as RecyclerView
+        noti_list_recyclerView = listItems.findViewById<View>(R.id.noti_list) as RecyclerView
         noti_search = listItems.findViewById<View>(R.id.noti_search) as LinearLayout
         test2()
         val currentDateTime = Calendar.getInstance().time
@@ -86,7 +91,7 @@ class NotiFragment : Fragment() {
             SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(currentDateTime)
         noti_search.textView2.text = dateFormat1
 
-
+            ListAdapter = ListAdapter(arrayListOf(),mContext)
 //        Log.v("NotiNumber", AppCache.getAll().toString())
 //        Log.v("NotiNumber", AppCache.getAll().toString())
 
@@ -131,15 +136,21 @@ class NotiFragment : Fragment() {
             var intent = Intent(mContext, SearchActivity::class.java)
             startActivity(intent)
         }
+        val lm = LinearLayoutManager(requireContext())
+        noti_list_recyclerView.adapter = ListAdapter
+        noti_list_recyclerView.layoutManager = lm
+        noti_list_recyclerView.setHasFixedSize(true)
 //        //클릭
         db = AppDB.getInstance(mContext!!)
 //        val r = Runnable {
-//            var AllNotificationList = AllNotificationList()
-////            db!!.DAO().getAll_app_name().size
-//            AllNotificationList = db!!.DAO().getAll_app_name()
-//            arrayList.add(0, AllNotificationList)
+//            AppList = db.DAO().getAll_app_name()
 //        }
-//
+
+        contactViewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
+        contactViewModel.getAll().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            contacts -> ListAdapter!!.setContacts(contacts!!)
+        })
+
 //        val thread = Thread(r)
 //        thread.start()
 
@@ -148,12 +159,12 @@ class NotiFragment : Fragment() {
 //        for_list()
 //        Log.v("arraylist", AllNotificationList)
         //UI 갱신 (라이브데이터 Observer 이용, 해당 디비값이 변화가생기면 실행됨)
-        db!!.DAO().getAll_app_name().observe(viewLifecycleOwner, androidx.lifecycle.Observer{
-            // update UI
-            Log.v("디비","데이터삽입")
-            ListAdapter = ListAdapter(it,mContext,db!!)
-            noti_list.adapter = ListAdapter
-        })
+//        db!!.DAO().getAll_app_name().observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+//            // update UI
+//            Log.v("디비","데이터삽입")
+//            ListAdapter = ListAdapter(it,mContext,db!!)
+//            noti_list.adapter = ListAdapter
+//        })
 
         // Inflate the layout for this fragment
         return listItems
@@ -202,7 +213,6 @@ class NotiFragment : Fragment() {
         calendar.timeInMillis = datetime
         return formatter.format(calendar.time)
     }
-
 
 
     override fun onStart() {
@@ -261,7 +271,6 @@ class NotiFragment : Fragment() {
 //        noti_list.setHasFixedSize(true)
 //        ListAdapter!!.notifyDataSetChanged()
 //    }
-
 
 
 //    fun for_list() {

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.example.customnotification.MainFragment.MainFragment
 import com.example.customnotification.MainFragment.NotiFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         Log.v("앱실행","확인")
         verifyStoragePermissions(this)
         a.setOnClickListener{
