@@ -3,18 +3,28 @@ package com.example.customnotification
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.customnotification.LogDetailAdapter.AllNotificationList1
+import com.example.customnotification.DataBase.AppDB
+import com.example.customnotification.DataBase.AppDetail
+import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.LogDetailAdapter.ListAdapter1
+import com.example.customnotification.ViewModel.ContactViewModel
 import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.recyleview.*
 
 class LogDetailActivity : AppCompatActivity() {
     val COUNT_KEY = "count_key"
-    var arrayList = ArrayList<AllNotificationList1>()
+    var arrayList = ArrayList<AppDetail>()
+    var db: AppDB? = null
+    var ListAdapter1: ListAdapter1? = null
+    private lateinit var contactViewModel: ContactViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_detail)
+        ListAdapter1 = ListAdapter1(arrayListOf(),this)
         var appname = intent.getStringExtra("appname")
         Log.v("인텐트 앱네임",appname)
 
@@ -23,45 +33,21 @@ class LogDetailActivity : AppCompatActivity() {
         var position = intent.getIntExtra("position",0)
         Log.v("인텐트 포지션",position.toString())
 
-        for (i in 1..AppCache.getInt(appname, 0)) {
-            val AllNotificationList = AllNotificationList1()
-            AllNotificationList.title = AppCache.getString("${appname}_title$i", "")
-            Log.v("현재시간",AppCache.getString("${appname}_title$i", ""))
+        db = AppDB.getInstance(this)
+//        val r = Runnable {
+//            AppList = db.DAO().getAll_app_name()
+//        }
 
-            AllNotificationList.text = AppCache.getString("${appname}_text$i", "")
-
-            AllNotificationList.bigtext = AppCache.getString("${appname}_bigtext$i", "")
-            if(AppCache.getString("${appname}_bigtext$i", "0").equals("null")){
-                AllNotificationList.bigtext = ""
-            }
-
-            AllNotificationList.date = AppCache.getString("${appname}_date$i", "")
-
-            AllNotificationList.icon = AppCache.getString("icon$position", "")
-
-            AllNotificationList.appname = AppCache.getString("appname$position", "")
-
-            AllNotificationList.picture = AppCache.getString("${appname}_picture$i", "")
-
-//            AllNotificationList.picture1 = AppCache.getString("picture$i", "0")
-
-//            Log.v("arraylist", AppCache.getString("title$i", "0"))
-//
-//            Log.v("arraylist", AppCache.getString("text$i", "0"))
-//
-//            Log.v("arraylist", AppCache.getString("date$i", "0"))
-
-//            Log.v("arraylist", AppCache.getString("icon$i", "0"))
-            arrayList.add(0, AllNotificationList)
+        contactViewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
+        contactViewModel.getAll_detail(appname).observe(this, Observer {
+                contacts -> ListAdapter1!!.setContacts(contacts!!)
+        })
 
 
-        }
-
-        val ListAdapter = ListAdapter1(arrayList)
-        noti_list.adapter = ListAdapter
+        noti_list.adapter = ListAdapter1
         val lm = LinearLayoutManager(this)
         noti_list.layoutManager = lm
         noti_list.setHasFixedSize(true)
-        ListAdapter.notifyDataSetChanged()
+//        ListAdapter1.notifyDataSetChanged()
     }
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customnotification.AppCache
+import com.example.customnotification.DataBase.AppDB
 import com.example.customnotification.LockScreenActivity
 import com.example.customnotification.R
 import com.example.customnotification.ScreenService
@@ -35,6 +36,7 @@ class MainFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var mContext: Context? = null
+    var db: AppDB? = null
     lateinit var noti_list : com.nex3z.flowlayout.FlowLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +58,12 @@ class MainFragment : Fragment() {
         var mainview :View = inflater.inflate(R.layout.fragment_main, container, false)
         noti_list = mainview.findViewById<View>(R.id.fragment_main) as com.nex3z.flowlayout.FlowLayout
         // Inflate the layout for this fragment
+        db = AppDB.getInstance(mContext!!)
         noti_list.c.setOnClickListener {
             val list = AppCache(mContext)
             list.clear()
+            db!!.DAO().deleteAll_app_name()
+            db!!.DAO().deleteAll_app_detail()
             Log.v("클리어",list.getAll().toString())
         }
 
