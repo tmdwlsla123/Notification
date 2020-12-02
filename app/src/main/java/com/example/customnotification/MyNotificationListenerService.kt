@@ -50,6 +50,7 @@ class MyNotificationListenerService : NotificationListenerService() {
         sbn?.packageName?.run {
             Log.e("kobbi", "MyNotificationListener.onNotificationPosted() --> packageName: $this")
             var notificatin: Notification = sbn.notification
+            Log.v("메시지 시간",sbn.postTime.toString())
             var extras: Bundle = notificatin.extras
             var bigtext: CharSequence? = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()?: ""
 //            var title? = null
@@ -58,7 +59,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             var date = SimpleDateFormat(
                 "yyyy.MM.dd HH:mm",
                 Locale.KOREA
-            ).format(Calendar.getInstance().time)
+            ).format(sbn.postTime)
             var subText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)
             //kakao profile picture
             var picture = extras?.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
@@ -154,7 +155,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                     extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.contains("안 읽은 메시지")
                         .toString()
                 )
-            } else if (text.equals("null")) {
+            } else if (text.equals("null")||text==null||text.equals("")) {
 
             } else if (arr[1].equals("com.google.android.googlequicksearchbox")) {
 

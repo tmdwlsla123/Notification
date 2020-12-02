@@ -70,7 +70,8 @@ class Holder(v: View,c: Context?) : RecyclerView.ViewHolder(v){
         } else if (min > 0) {
             min.toString() + "분 전"
         } else if (sec > 0) {
-            sec.toString() + "초 전"
+//            sec.toString() + "초 전"
+            "지금"
         } else {
             SimpleDateFormat("yyyy.MM.dd HH:mm").format(date)
         }
