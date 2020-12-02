@@ -16,8 +16,6 @@ import kotlinx.android.synthetic.main.fragment_noti.*
 import kotlinx.android.synthetic.main.recyleview.*
 
 class LogDetailActivity : AppCompatActivity() {
-    val COUNT_KEY = "count_key"
-    var arrayList = ArrayList<AppDetail>()
     var db: AppDB? = null
     var ListAdapter1: ListAdapter1? = null
     private lateinit var contactViewModel: ContactViewModel
@@ -28,8 +26,7 @@ class LogDetailActivity : AppCompatActivity() {
         var appname = intent.getStringExtra("appname")
         Log.v("인텐트 앱네임",appname)
 
-        var AppCache = AppCache(this)
-        var app_count = AppCache.getInt(COUNT_KEY,0)
+
         var position = intent.getIntExtra("position",0)
         Log.v("인텐트 포지션",position.toString())
 

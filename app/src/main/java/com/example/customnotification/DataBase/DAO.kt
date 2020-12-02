@@ -36,6 +36,9 @@ interface DAO {
     @Query("SELECT * FROM app_detail LEFT JOIN app_name ON app_detail.name = app_name.app_name WHERE name = :string ORDER BY D_id DESC")
     fun getAll_app_detail_division(string: String): LiveData<List<AppNameAndAppDetail1>>
 
+    @Query("SELECT * FROM app_detail LEFT JOIN app_name ON app_detail.name = app_name.app_name WHERE text LIKE :string ORDER BY D_id DESC")
+    fun getAll_search(string: String?): LiveData<List<AppNameAndAppDetail1>>
+
     @Insert
     fun insertAll_app_detail(data: AppDetail)
 

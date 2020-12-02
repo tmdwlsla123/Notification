@@ -141,7 +141,6 @@ class MyNotificationListenerService : NotificationListenerService() {
                 bigtext = ""
 //                Log.v("빅텍스트가 참임", bigtext)
             }
-            val list = AppCache(mContext)
             var arr = sbn.key.split("|")
             Log.v("배열", arr.toString())
 
@@ -211,7 +210,6 @@ class MyNotificationListenerService : NotificationListenerService() {
 //                Log.v("데이터베이스 조인 최근",db!!.DAO().getAll_lately().get(0).toString())
                 System.out.println(db!!.DAO().getAll_lately())
                 Log.v("현재 타이틀", title)
-                list.saveNotification(title, text, bigtext, date, bmp, appName, picture, picture1)
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)

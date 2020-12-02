@@ -21,4 +21,7 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
         Log.v("레파지토리",repository.getAll_detail(string).toString())
         return this.repository.getAll_detail(string)
     }
+    fun getAll_search(string: String?): LiveData<List<AppNameAndAppDetail1>> {
+        return this.repository.getAll_search(string)
+    }
 }

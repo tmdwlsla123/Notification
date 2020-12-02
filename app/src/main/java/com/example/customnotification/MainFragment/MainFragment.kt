@@ -1,9 +1,7 @@
     package com.example.customnotification.MainFragment
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,14 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
-import androidx.recyclerview.widget.RecyclerView
-import com.example.customnotification.AppCache
 import com.example.customnotification.DataBase.AppDB
 import com.example.customnotification.LockScreenActivity
 import com.example.customnotification.R
 import com.example.customnotification.ScreenService
-import com.example.customnotification.receiver.BroadCastReceiver
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -60,11 +54,8 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         db = AppDB.getInstance(mContext!!)
         noti_list.c.setOnClickListener {
-            val list = AppCache(mContext)
-            list.clear()
             db!!.DAO().deleteAll_app_name()
             db!!.DAO().deleteAll_app_detail()
-            Log.v("클리어",list.getAll().toString())
         }
 
 
@@ -85,7 +76,8 @@ class MainFragment : Fragment() {
         noti_list.button.setOnClickListener {
             if (!isNotificationPermissionAllowed())
                 startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-
+            else
+                startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
             /**
              * Notification 접근 권한 체크 메서드
              * @return 접근권한이 있을 경우 true, 아니면 false
@@ -119,7 +111,7 @@ class MainFragment : Fragment() {
     private fun isNotificationPermissionAllowed(): Boolean {
         return NotificationManagerCompat.getEnabledListenerPackages(mContext!!)
             .any { enabledPackageName ->
-                enabledPackageName == activity!!.packageName
+                enabledPackageName == requireActivity().packageName
             }
     }
 

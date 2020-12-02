@@ -16,6 +16,9 @@ class ContactRepository(application: Application) {
     fun getAll_detail(string: String): LiveData<List<AppNameAndAppDetail1>> {
         return contactDao.getAll_app_detail_division(string)
     }
+    fun getAll_search(string: String?): LiveData<List<AppNameAndAppDetail1>> {
+        return contactDao.getAll_search(string)
+    }
 //    fun insert(contact: AppName) {
 //        try {
 //            val thread = Thread(Runnable {

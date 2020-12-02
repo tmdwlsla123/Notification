@@ -11,17 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.customnotification.AppCache
 import com.example.customnotification.DataBase.AppDB
-import com.example.customnotification.DataBase.AppName
 import com.example.customnotification.EventBus.MessageEvent
-import com.example.customnotification.LogAppListAdapter.AllNotificationList
 import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.R
 import com.example.customnotification.SearchActivity
@@ -34,7 +29,6 @@ import org.greenrobot.eventbus.ThreadMode
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Collections.sort
 
 import kotlin.collections.ArrayList
 
@@ -55,8 +49,6 @@ class NotiFragment : Fragment() {
     private var param2: String? = null
     lateinit var noti_list_recyclerView: RecyclerView
     lateinit var noti_search: LinearLayout
-    var arrayList = ArrayList<AllNotificationList>()
-    val COUNT_KEY = "count_key"
     var mContext: Context? = null
     var ListAdapter: ListAdapter? = null
     var db: AppDB? = null
@@ -128,7 +120,6 @@ class NotiFragment : Fragment() {
 
         }
 
-        var map: Map<String, *> = AppCache(context).getAll()
         //오류 내기 전용 코드
 //        search_button.setOnClickListener {  }
         //클릭
