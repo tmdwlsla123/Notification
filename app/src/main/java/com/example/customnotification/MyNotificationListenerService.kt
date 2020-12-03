@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-@SuppressLint("OverrideAbstract")
+
 class MyNotificationListenerService : NotificationListenerService() {
     var mContext: Context = this
     var db : AppDB? = null
@@ -47,6 +47,7 @@ class MyNotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
+        Log.e("what",getActiveNotifications().toString())
         sbn?.packageName?.run {
             Log.e("kobbi", "MyNotificationListener.onNotificationPosted() --> packageName: $this")
             var notificatin: Notification = sbn.notification
@@ -162,15 +163,6 @@ class MyNotificationListenerService : NotificationListenerService() {
             } else if (title==null) {
 
             }
-//            else if(text.equals("")){
-//                var bigtext = extras.getString(Notification.EXTRA_BIG_TEXT)
-//                list.saveNotification(title, bigtext, date, bmp, appName,picture,picture1)
-//                msgrcv.putExtra("title", title)
-//                msgrcv.putExtra("text", text)
-//                msgrcv.putExtra("date", date)
-//                msgrcv.putExtra("icon", b)
-//                msgrcv.putExtra("appname", appName)
-//            }
             else {
                 if (extras.get(Notification.EXTRA_LARGE_ICON).toString().contains("Icon")) {
                     Log.v("아이콘포함", "ㄹㅇ")
@@ -214,7 +206,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)
-                msgrcv.putExtra("icon", b)
+                msgrcv.putExtra("icon", bmp)
                 msgrcv.putExtra("appname", appName)
                 EventBus.getDefault().post(MessageEvent("Hello everyone!"));
             }

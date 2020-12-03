@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
@@ -30,8 +31,8 @@ class LockScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lock_screen)
-        val title = intent.getStringExtra("title")
-        val text = intent.getStringExtra("text")
+//        val title = intent.getStringExtra("title")
+//        val text = intent.getStringExtra("text")
 //        val a = intent.getStringExtra("")
 //        val header: View = layoutInflater.inflate(R.layout.lock_screen_header, null, false)
 //        notifi_list.addHeaderView(header)
@@ -53,7 +54,7 @@ class LockScreenActivity : AppCompatActivity() {
             runOnUiThread {
                 date_time.setText(dateFormat)
                 date_day.setText(dateFormat2)
-//                Log.v("TAG", dateFormat1)
+                Log.v("TAG", dateFormat1)
             }
         }
         lock_open.setOnClickListener {
@@ -73,16 +74,16 @@ class LockScreenActivity : AppCompatActivity() {
 
     }
 
-    private var onNotice: BroadcastReceiver = object : BroadcastReceiver() {
+    private val onNotice: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
 
             var title = intent.getStringExtra("title")
             var text = intent.getStringExtra("text")
             var date = intent.getStringExtra("date")
             var appname = intent.getStringExtra("appname")
-
-            val arr = intent.getByteArrayExtra("icon")
-            var image = BitmapFactory.decodeByteArray(arr, 0, arr.size)
+            var icon = intent.getParcelableExtra<Bitmap>("icon")
+//            val arr = intent.getByteArrayExtra("icon")
+//            var image = BitmapFactory.decodeByteArray(arr, 0, arr.size)
 
 
 
@@ -93,7 +94,7 @@ class LockScreenActivity : AppCompatActivity() {
             NotificationList.title = title
             NotificationList.text = text
             NotificationList.date = date
-            NotificationList.icon = image
+            NotificationList.icon = icon
             NotificationList.appname = appname
 
 
