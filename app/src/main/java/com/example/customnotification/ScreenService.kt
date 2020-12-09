@@ -26,11 +26,16 @@ class ScreenService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        Log.e("뭐가드러잉누",intent.toString())
+        Log.e("뭐가드러잉누",flags.toString())
+        Log.e("뭐가드러잉누",startId.toString())
+
         if (intent != null) {
             if (intent.action == null) {
                 if (mReceiver == null) {
                     mReceiver = ScreenReceiver()
                     val filter = IntentFilter(Intent.ACTION_SCREEN_OFF)
+                    Log.e("언제 발동되누",filter.toString())
                     registerReceiver(mReceiver, filter)
                 }
             }

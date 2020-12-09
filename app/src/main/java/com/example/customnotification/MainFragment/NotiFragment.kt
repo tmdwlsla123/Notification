@@ -79,46 +79,10 @@ class NotiFragment : Fragment() {
         noti_search = listItems.findViewById<View>(R.id.noti_search) as LinearLayout
         test2()
         val currentDateTime = Calendar.getInstance().time
-        var dateFormat1 =
-            SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(currentDateTime)
-        noti_search.textView2.text = dateFormat1
 
             ListAdapter = ListAdapter(arrayListOf(),mContext)
 //        Log.v("NotiNumber", AppCache.getAll().toString())
 //        Log.v("NotiNumber", AppCache.getAll().toString())
-
-        noti_search.noit_calendar1.setOnClickListener { view ->
-            var calendar = Calendar.getInstance()
-            var year = calendar.get(Calendar.YEAR)
-            var month = calendar.get(Calendar.MONTH)
-            var day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            var date_listener = object : DatePickerDialog.OnDateSetListener {
-                override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    textView1.text = "${year}.${month + 1}.${dayOfMonth}"
-                }
-            }
-
-            var builder = DatePickerDialog(mContext!!, date_listener, year, month, day)
-            builder.show()
-
-        }
-        noti_search.noit_calendar2.setOnClickListener { view ->
-            var calendar = Calendar.getInstance()
-            var year = calendar.get(Calendar.YEAR)
-            var month = calendar.get(Calendar.MONTH)
-            var day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            var date_listener = object : DatePickerDialog.OnDateSetListener {
-                override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    textView2.text = "${year}.${month + 1}.${dayOfMonth}"
-                }
-            }
-
-            var builder = DatePickerDialog(mContext!!, date_listener, year, month, day)
-            builder.show()
-
-        }
 
         //오류 내기 전용 코드
 //        search_button.setOnClickListener {  }
@@ -170,17 +134,6 @@ class NotiFragment : Fragment() {
     private fun test2() {
 
 // Android 2.3 이상에서 사용 가능한 방식.
-        try {
-            val packageManager: PackageManager = mContext!!.packageManager
-            val installed = packageManager.getPackageInfo(
-                mContext!!.packageName,
-                0
-            ).firstInstallTime
-            Log.v("설치날짜", getData(installed))
-            noti_search.textView1.text = getData(installed)
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
 
     }
 

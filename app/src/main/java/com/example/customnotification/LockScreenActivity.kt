@@ -31,15 +31,6 @@ class LockScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lock_screen)
-//        val title = intent.getStringExtra("title")
-//        val text = intent.getStringExtra("text")
-//        val a = intent.getStringExtra("")
-//        val header: View = layoutInflater.inflate(R.layout.lock_screen_header, null, false)
-//        notifi_list.addHeaderView(header)
-//        val footer : View = layoutInflater.inflate(R.layout.lock_screen_footer, null, false)
-//        notifi_list.addFooterView(footer)
-
-
 
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, IntentFilter("Msg"))
         //잠금화면 시간 UI
@@ -61,14 +52,7 @@ class LockScreenActivity : AppCompatActivity() {
             finish()
             timer?.cancel()
         }
-        //알림 레이아웃 부모
 
-        val myNotificationListenerService = MyNotificationListenerService()
-//        Log.v("브로드캐스트 유무",)
-
-
-        val textView = TextView(this)
-        textView.text = "글자"
 
 
 

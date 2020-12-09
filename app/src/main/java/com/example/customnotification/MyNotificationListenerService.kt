@@ -136,7 +136,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             }
 
 
-            LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
+
 
 //            val pref = this.getPreferences(0)
             if (text.equals(bigtext.toString())) {
@@ -203,6 +203,7 @@ class MyNotificationListenerService : NotificationListenerService() {
 //                Log.v("데이터베이스 조인 최근",db!!.DAO().getAll_lately().get(0).toString())
                 System.out.println(db!!.DAO().getAll_lately())
                 Log.v("현재 타이틀", title)
+                LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(msgrcv);
                 msgrcv.putExtra("title", title)
                 msgrcv.putExtra("text", text)
                 msgrcv.putExtra("date", date)

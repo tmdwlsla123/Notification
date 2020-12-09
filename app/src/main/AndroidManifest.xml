@@ -17,17 +17,10 @@
         <activity android:name=".SearchActivity"></activity>
         <activity android:name=".LogDetailActivity" />
 
-        <receiver
-            android:name=".receiver.BroadCastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.example.customnotification.receiver" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".LockScreenActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/Transparent" />
         <activity
             android:name=".MainActivity"
