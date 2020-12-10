@@ -5,17 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.baoyz.swipemenulistview.SwipeMenu
+import com.baoyz.swipemenulistview.SwipeMenuCreator
+import com.baoyz.swipemenulistview.SwipeMenuItem
+import com.baoyz.swipemenulistview.SwipeMenuListView
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener
 import kotlinx.android.synthetic.main.activity_lock_screen.*
-import kotlinx.android.synthetic.main.notification.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.timer
@@ -27,7 +31,7 @@ class LockScreenActivity : AppCompatActivity() {
     val notificationadapter: NotificationAdapter? = null
     private val ACTION_NOTIFICATION_LISTENER_SETTINGS =
         "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
-
+    var creator: SwipeMenuCreator? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lock_screen)
@@ -49,13 +53,22 @@ class LockScreenActivity : AppCompatActivity() {
             }
         }
         lock_open.setOnClickListener {
+            timer.cancel()
             finish()
-            timer?.cancel()
+
+
         }
 
 
+    }
 
+    override fun onStop() {
+        super.onStop()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice)
     }
 
     private val onNotice: BroadcastReceiver = object : BroadcastReceiver() {
@@ -87,7 +100,6 @@ class LockScreenActivity : AppCompatActivity() {
             arrayList.add(0,NotificationList)
             val notificationadapter = NotificationAdapter(applicationContext, arrayList)
             notifi_list.adapter = notificationadapter
-
 
             Log.v("리스트 배열",notificationadapter.toString())
             Log.v("리스트 배열",arrayList.toString())

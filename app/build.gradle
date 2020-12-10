@@ -35,7 +35,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding{ enabled = true }
+    buildFeatures {
+        dataBinding  = true
+    }
 }
 
 dependencies {
@@ -85,6 +87,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    implementation 'com.baoyz.swipemenulistview:library:1.3.0'
 
 }
 configurations.all {
