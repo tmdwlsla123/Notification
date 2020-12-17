@@ -14,6 +14,8 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.baoyz.swipemenulistview.SwipeMenu
 import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.baoyz.swipemenulistview.SwipeMenuItem
@@ -100,11 +102,15 @@ class LockScreenActivity : AppCompatActivity() {
             arrayList.add(0,NotificationList)
             val notificationadapter = NotificationAdapter(applicationContext, arrayList)
             notifi_list.adapter = notificationadapter
-
+            val lm = LinearLayoutManager(applicationContext)
+            notifi_list.layoutManager = lm
+            notifi_list.setHasFixedSize(true)
             Log.v("리스트 배열",notificationadapter.toString())
             Log.v("리스트 배열",arrayList.toString())
             //
-
+            val swipeHelperCallback = SwipeHelperCallback()
+            val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+            itemTouchHelper.attachToRecyclerView(notifi_list)
             Log.v("브로드캐스트", "$<b>$title : </b>$text")
         }
     }
