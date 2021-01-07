@@ -4,23 +4,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.baoyz.swipemenulistview.SwipeMenu
 import com.baoyz.swipemenulistview.SwipeMenuCreator
-import com.baoyz.swipemenulistview.SwipeMenuItem
-import com.baoyz.swipemenulistview.SwipeMenuListView
-import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener
+import com.example.customnotification.DataBase.AppNameAndAppDetail1
+import com.example.customnotification.ViewModel.ContactViewModel
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.synthetic.main.activity_lock_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,14 +26,26 @@ import kotlin.concurrent.timer
 
 class LockScreenActivity : AppCompatActivity() {
     val TAG = "MainActivity"
-    var arrayList = ArrayList<NotificationList>()
+
+    val continents = ArrayList<AppNameAndAppDetail1>()
+
     val notificationadapter: NotificationAdapter? = null
     private val ACTION_NOTIFICATION_LISTENER_SETTINGS =
         "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
     var creator: SwipeMenuCreator? = null
+    private lateinit var contactViewModel: ContactViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lock_screen)
+        val notificationadapter = NotificationAdapter(applicationContext)
+        notifi_list.adapter = notificationadapter
+        val lm = LinearLayoutManager(applicationContext)
+        notifi_list.layoutManager = lm
+//        notifi_list.setHasFixedSize(true)
+        //
+        val swipeHelperCallback = SwipeHelperCallback(notificationadapter,application)
+        val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+        itemTouchHelper.attachToRecyclerView(notifi_list)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, IntentFilter("Msg"))
         //잠금화면 시간 UI
@@ -60,6 +69,10 @@ class LockScreenActivity : AppCompatActivity() {
 
 
         }
+        contactViewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
+        contactViewModel.lockscreen().observe(this, androidx.lifecycle.Observer {
+                contacts -> notificationadapter!!.setContacts(contacts!!)
+        })
 
 
     }
@@ -76,42 +89,6 @@ class LockScreenActivity : AppCompatActivity() {
     private val onNotice: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
 
-            var title = intent.getStringExtra("title")
-            var text = intent.getStringExtra("text")
-            var date = intent.getStringExtra("date")
-            var appname = intent.getStringExtra("appname")
-            var icon = intent.getParcelableExtra<Bitmap>("icon")
-//            val arr = intent.getByteArrayExtra("icon")
-//            var image = BitmapFactory.decodeByteArray(arr, 0, arr.size)
-
-
-
-            val NotificationList = NotificationList()
-
-
-
-            NotificationList.title = title
-            NotificationList.text = text
-            NotificationList.date = date
-            NotificationList.icon = icon
-            NotificationList.appname = appname
-
-
-
-
-            arrayList.add(0,NotificationList)
-            val notificationadapter = NotificationAdapter(applicationContext, arrayList)
-            notifi_list.adapter = notificationadapter
-            val lm = LinearLayoutManager(applicationContext)
-            notifi_list.layoutManager = lm
-            notifi_list.setHasFixedSize(true)
-            Log.v("리스트 배열",notificationadapter.toString())
-            Log.v("리스트 배열",arrayList.toString())
-            //
-            val swipeHelperCallback = SwipeHelperCallback()
-            val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
-            itemTouchHelper.attachToRecyclerView(notifi_list)
-            Log.v("브로드캐스트", "$<b>$title : </b>$text")
         }
     }
 
@@ -144,4 +121,5 @@ class LockScreenActivity : AppCompatActivity() {
 
 
 }
+
 

@@ -4,44 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LockScreenActivity"
     android:orientation="vertical"
-    ><LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="12:00"
-        android:textSize="70sp"
-        android:id="@+id/date_time"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="1월 1일 일요일"
-        android:textSize="30sp"
-        android:id="@+id/date_day"/>
-</LinearLayout>
-<!--   알림 영역-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/notifi_list"/>
+    tools:context=".LockScreenActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
-        <Button
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:id="@+id/date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="잠금해제"
+            android:layout_gravity="center"
+            android:text="12:00"
+            android:textSize="70sp" />
 
-            android:id="@+id/lock_open"/>
+        <TextView
+            android:id="@+id/date_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="1월 1일 일요일"
+            android:textSize="30sp" />
     </LinearLayout>
-<!--    //-->
+    <!--   알림 영역-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notifi_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/lock_open"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="잠금해제" />
+    </LinearLayout>
+    <!--    //-->
 </LinearLayout>

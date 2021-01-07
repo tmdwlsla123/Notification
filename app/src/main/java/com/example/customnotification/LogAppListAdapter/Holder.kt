@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.customnotification.DataBase.AppName
 import com.example.customnotification.DataBase.AppNameAndAppDetail
 import com.example.customnotification.LogDetailActivity
+import com.example.customnotification.UtilClass.UtilClass
 import kotlinx.android.synthetic.main.list.view.*
 import java.io.File
 import java.io.FileInputStream
@@ -29,8 +30,9 @@ class Holder(v: View,c: Context?) : RecyclerView.ViewHolder(v){
         view.list_title.text = item.appdetail!!.title
         view.list_text.text = item.appdetail!!.text
         view.list_bigtext.text = item.appdetail!!.bigtext
-        Log.v("시간",beforeTime(format.parse(item.appdetail!!.date)))
-        view.list_date.text = beforeTime(format.parse(item.appdetail!!.date))
+
+        Log.v("시간",UtilClass.beforeTime(format.parse(item.appdetail!!.date)))
+        view.list_date.text = UtilClass.beforeTime(format.parse(item.appdetail!!.date))
 //        var icon = BitmapConverter().StringToBitmap(item.icon)
 //        view.list_icon.setImageBitmap(icon)
         Log.v("포지션",item.appname.toString())
@@ -49,34 +51,7 @@ class Holder(v: View,c: Context?) : RecyclerView.ViewHolder(v){
 //        view.list_picture.setImageBitmap(picture1)
     }
 
-    fun beforeTime(date: Date): String? {
-        val c = Calendar.getInstance()
-        val now = c.timeInMillis
-        val dateM = date.time
-        var gap = now - dateM
-        var ret = ""
 
-//        초       분   시
-//        1000    60  60
-        gap = (gap / 1000)
-        val hour = gap / 3600
-        gap = gap % 3600
-        val min = gap / 60
-        val sec = gap % 60
-        ret = if (hour > 24) {
-            SimpleDateFormat("yyyy.MM.dd HH:mm").format(date)
-        } else if (hour > 0) {
-            hour.toString() + "시간 전"
-        } else if (min > 0) {
-            min.toString() + "분 전"
-        } else if (sec > 0) {
-//            sec.toString() + "초 전"
-            "지금"
-        } else {
-            SimpleDateFormat("yyyy.MM.dd HH:mm").format(date)
-        }
-        return ret
-    }
 //    fun loadFromInnerStorage(filename: String) :String{
 //        val fileInputStream = context!!.openFileInput(filename)
 //

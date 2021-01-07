@@ -1,12 +1,15 @@
 package com.example.customnotification
 
+import android.content.Context
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
 import androidx.recyclerview.widget.RecyclerView
+import com.example.customnotification.DataBase.AppDB
 
-class SwipeHelperCallback : ItemTouchHelper.Callback() {
-
+class SwipeHelperCallback(val adapter: NotificationAdapter,val context: Context) : ItemTouchHelper.Callback() {
+    val db = AppDB.getInstance(context)
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -21,5 +24,14 @@ class SwipeHelperCallback : ItemTouchHelper.Callback() {
         target: RecyclerView.ViewHolder
     ) = false
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
+    override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+        return defaultValue * 5
+    }
+
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        db!!.DAO().update_screen_status(adapter.data.get(viewHolder.position).appdetail!!.packagename!!)
+        adapter.notifyDataSetChanged()
+    Log.e("포지션",viewHolder.position.toString())
+    }
 }

@@ -31,10 +31,15 @@ import java.util.*
 
 
 
-class MyNotificationListenerService : NotificationListenerService() {
+class MyNotificationListenerService1 : NotificationListenerService() {
     var mContext: Context = this
     var db : AppDB? = null
     var contactsList = mutableListOf<AppName>()
+    override fun onCreate() {
+        super.onCreate()
+        Log.e("kobbi", "MyNotificationListener.onCreate()")
+    }
+
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.e("kobbi", "MyNotificationListener.onListenerConnected()")
@@ -163,9 +168,11 @@ class MyNotificationListenerService : NotificationListenerService() {
             } else if (title==null) {
 
             }
+//            else if(this.equals("android")){
+//
+//            }
             else {
                 if (extras.get(Notification.EXTRA_LARGE_ICON).toString().contains("Icon")) {
-                    Log.v("아이콘포함", "ㄹㅇ")
                     var drawable: Icon = extras.get(Notification.EXTRA_LARGE_ICON) as Icon
 
 
@@ -196,8 +203,10 @@ class MyNotificationListenerService : NotificationListenerService() {
                 Log.v("null check",bigtext.toString())
                 Log.v("null check",date)
                 Log.v("null check",bitmapToFile(picture))
-                var detail_class = AppDetail(null,appName?: "",title?: "",text?: "",bigtext.toString()?: "",date,bitmapToFile(picture))
-                db!!.DAO().insertAll_app_detail(detail_class)
+                var detail_class = AppDetail(null,this,appName?: "",title?: "",text?: "",bigtext.toString()?: null,date,bitmapToFile(picture),"0","0",0)
+               var id = db!!.DAO().insertAll_app_detail(detail_class)
+                db!!.DAO().update_lately_notifi(id,this)
+                Log.v("데이터베이스",id.toString())
                 Log.v("데이터베이스",db!!.DAO().getAll_app_name().toString())
                 Log.v("데이터베이스",db!!.DAO().getAll_app_detail()[0].name)
 //                Log.v("데이터베이스 조인 최근",db!!.DAO().getAll_lately().get(0).toString())

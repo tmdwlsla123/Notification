@@ -5,30 +5,75 @@
     android:layout_height="match_parent"
     tools:context=".MainFragment.MainFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.nex3z.flowlayout.FlowLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_main"
+        android:orientation="vertical"
+
         >
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+        <Switch
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="알림"></Button>
+            android:id="@+id/lock_screen_switch_btn"
+            android:text="잠금화면 ON / OFF"
+            android:padding="20dp"
+            android:switchMinWidth="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bottom_border"/>
 
-        <Button
-            android:id="@+id/onBtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="잠금화면 on"></Button>
+            android:background="@drawable/bottom_border">
+            <TextView
+                android:padding="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/background_dark"
+                android:text="알림 기록 초기화"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:id="@+id/c"
+                android:text="RESET"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_border">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:textColor="@android:color/background_dark"
+                android:text="알림 기록 설정 하기"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="※필수"/>
 
-        <Button
-            android:id="@+id/offBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="잠금화면 off"></Button>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:textAllCaps="false"
+                android:text="Setting"/>
+        </LinearLayout>
+
+
+
 
         <Button
             android:id="@+id/now_start"
@@ -36,11 +81,7 @@
             android:layout_height="wrap_content"
             android:text="잠금화면 보이게"></Button>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/c"
-            android:text="노티피케이션 초기화"/>
-    </com.nex3z.flowlayout.FlowLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

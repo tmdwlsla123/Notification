@@ -1,15 +1,11 @@
 package com.example.customnotification.MainFragment
 
-import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,18 +15,13 @@ import com.example.customnotification.DataBase.AppDB
 import com.example.customnotification.EventBus.MessageEvent
 import com.example.customnotification.LogAppListAdapter.ListAdapter
 import com.example.customnotification.R
-import com.example.customnotification.SearchActivity
 import com.example.customnotification.ViewModel.ContactViewModel
-import kotlinx.android.synthetic.main.fragment_noti.*
-import kotlinx.android.synthetic.main.fragment_noti.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-
-import kotlin.collections.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -87,10 +78,10 @@ class NotiFragment : Fragment() {
         //오류 내기 전용 코드
 //        search_button.setOnClickListener {  }
         //클릭
-        noti_search.search_button.setOnClickListener {
-            var intent = Intent(mContext, SearchActivity::class.java)
-            startActivity(intent)
-        }
+//        noti_search.search_button.setOnClickListener {
+//            var intent = Intent(mContext, SearchActivity::class.java)
+//            startActivity(intent)
+//        }
         val lm = LinearLayoutManager(requireContext())
         noti_list_recyclerView.adapter = ListAdapter
         noti_list_recyclerView.layoutManager = lm
