@@ -5,30 +5,19 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.LinearLayout
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.example.customnotification.DataBase.AppDB
-import com.example.customnotification.DataBase.AppFilter
-import com.example.customnotification.LockScreenActivity
-import com.example.customnotification.MainActivity
+import com.example.customnotification.LockScreen.LockScreen
 import com.example.customnotification.R
-import com.example.customnotification.Retrofit2.ApiInterface
-import com.example.customnotification.Retrofit2.HttpClient
-import com.example.customnotification.ScreenService
-import com.google.gson.Gson
+import com.example.customnotification.LockScreenService
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
-import org.json.JSONArray
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,6 +36,7 @@ class MainFragment : Fragment() {
     var mContext: Context? = null
     var db: AppDB? = null
     lateinit var noti_list: LinearLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,19 +57,26 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var mainview: View = inflater.inflate(R.layout.fragment_main, container, false)
-        noti_list =
-            mainview.findViewById<View>(R.id.fragment_main) as LinearLayout
+        noti_list = mainview.findViewById<View>(R.id.fragment_main) as LinearLayout
+        val lockScreenStatusPreferences by lazy {
+            mContext!!.getSharedPreferences("LockScreenStatus", Context.MODE_PRIVATE)
+        }
+
         // Inflate the layout for this fragment
         db = AppDB.getInstance(mContext!!)
+        initLockScreenSwitch()
         noti_list.c.setOnClickListener {
-            val dlg: AlertDialog.Builder = AlertDialog.Builder(context,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
+            val dlg: AlertDialog.Builder = AlertDialog.Builder(
+                context,
+                android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth
+            )
             dlg.setTitle("알림") //제목
             dlg.setMessage("정말 알림 기록을 모두 삭제하시겠습니까?") // 메시지
             dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-            db!!.DAO().deleteAll_app_name()
-            db!!.DAO().deleteAll_app_detail()
+                db!!.DAO().deleteAll_app_name()
+                db!!.DAO().deleteAll_app_detail()
             })
-            dlg.setNegativeButton("취소", DialogInterface.OnClickListener{ dialog, which ->
+            dlg.setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
 
             })
             dlg.show()
@@ -89,21 +86,33 @@ class MainFragment : Fragment() {
 //            (activity as MainActivity).sendReuqest()
 //        }
 
-        noti_list.lock_screen_switch_btn.setOnCheckedChangeListener{CompoundButton, onSwitch ->
-            if(onSwitch){
-                val intent = Intent(activity, ScreenService::class.java)
-                activity?.startService(intent)
+        noti_list.lock_screen_switch_btn.setOnCheckedChangeListener { CompoundButton, onSwitch ->
+//            setLockScreenStatus(onSwitch)
+            lockScreenStatusPreferences.edit()?.run {
+                putBoolean("LockScreenStatus", onSwitch)
+                apply()
             }
-            else{
-                val intent = Intent(activity, ScreenService::class.java)
-                activity?.stopService(intent)
+            if (onSwitch) {
+                LockScreen.active()
+                Snackbar.make(
+                    noti_list.lock_screen_switch_btn,
+                    getString(R.string.lockscrenOn),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                LockScreen.deActivate()
+                Snackbar.make(
+                    noti_list.lock_screen_switch_btn,
+                    getString(R.string.lockscrenOff),
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
 
-        noti_list.now_start.setOnClickListener {
-            val intent = Intent(activity, LockScreenActivity::class.java)
-            startActivity(intent)
-        }
+//        noti_list.now_start.setOnClickListener {
+//            val intent = Intent(activity, LockScreenActivity::class.java)
+//            startActivity(intent)
+//        }
         noti_list.button.setOnClickListener {
             if (!isNotificationPermissionAllowed())
                 startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
@@ -147,5 +156,20 @@ class MainFragment : Fragment() {
             }
     }
 
-
+    private fun initLockScreenSwitch() {
+        val hasLockScreen = LockScreen.getLockScreenStatus()
+        noti_list.lock_screen_switch_btn.isChecked = hasLockScreen
+        if (hasLockScreen) {
+            LockScreen.active()
+        } else {
+            LockScreen.deActivate()
+        }
+    }
+//
+//    private fun setLockScreenStatus(lockScreenStatus: Boolean) {
+//        lockScreenStatusPreferences.edit()?.run {
+//            putBoolean("LockScreenStatus", lockScreenStatus)
+//            apply()
+//        }
+//    }
 }

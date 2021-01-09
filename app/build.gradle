@@ -101,7 +101,7 @@ dependencies {
     //Expandable
     implementation 'com.thoughtbot:expandablerecyclerview:1.4'
     implementation 'com.thoughtbot:expandablecheckrecyclerview:1.4'
-
+    implementation 'com.android.support:multidex:1.0.3'
 }
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".LockScreen.LockScreenApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BeDelete.SearchActivity"></activity>
         <activity android:name=".LogDetailActivity" />
 
 
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ScreenService" />
+        <service android:name=".LockScreenService" />
         <service
             android:name="com.example.customnotification.MyNotificationListenerService1"
             android:label="My Notification Listener"

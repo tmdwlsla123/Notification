@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.example.customnotification.DataBase.AppNameAndAppDetail1
+import com.example.customnotification.LockScreen.ButtonUnLock
+import com.example.customnotification.LockScreen.ViewUnLock
 import com.example.customnotification.ViewModel.ContactViewModel
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.synthetic.main.activity_lock_screen.*
@@ -25,6 +27,16 @@ import kotlin.concurrent.timer
 
 
 class LockScreenActivity : AppCompatActivity() {
+    companion object {
+        fun newIntent(context: Context?) : Intent {
+            return Intent(context, LockScreenActivity::class.java)
+                .apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                }
+        }
+    }
+    private var timer: Timer? = null
     val TAG = "MainActivity"
 
     val continents = ArrayList<AppNameAndAppDetail1>()
@@ -49,7 +61,7 @@ class LockScreenActivity : AppCompatActivity() {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, IntentFilter("Msg"))
         //잠금화면 시간 UI
-        var timer = timer(period = 1000) {
+        timer = timer(period = 1000) {
             // 1초마다 실행할 블록
             val currentDateTime = Calendar.getInstance().time
             var dateFormat1 =
@@ -62,12 +74,6 @@ class LockScreenActivity : AppCompatActivity() {
                 date_day.setText(dateFormat2)
                 Log.v("TAG", dateFormat1)
             }
-        }
-        lock_open.setOnClickListener {
-            timer.cancel()
-            finish()
-
-
         }
         contactViewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
         contactViewModel.lockscreen().observe(this, androidx.lifecycle.Observer {
@@ -118,7 +124,38 @@ class LockScreenActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         super.onAttachedToWindow()
     }
+    override fun onResume() {
+        super.onResume()
 
+        setButtonUnlock()
+        setViewUnlock()
+    }
+
+    private fun setButtonUnlock() {
+        swipeUnLockButton.setOnUnlockListenerRight(object : ButtonUnLock.OnUnlockListener {
+            override fun onUnlock() {
+                timer!!.cancel()
+                finish()
+            }
+        })
+    }
+
+
+    private fun setViewUnlock() {
+        lockScreenView.x = 0f
+        lockScreenView.setOnTouchListener(object : ViewUnLock(this, lockScreenView) {
+            override fun onFinish() {
+                timer!!.cancel()
+                finish()
+                super.onFinish()
+
+            }
+        })
+    }
+
+    override fun onBackPressed() {
+
+    }
 
 }
 
