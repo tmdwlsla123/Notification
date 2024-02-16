@@ -13,5 +13,6 @@
 <img src="https://user-images.githubusercontent.com/63600525/144054495-ae4647d1-b8a5-4e4c-ac36-5f005aa7457a.gif"  width="200" height="400"/> 
 
  - 알림 검색
-<img src="https://user-images.githubusercontent.com/63600525/144054500-fb447d39-99c7-479c-b921-0c72c51bbf14.gif"  width="200" height="400"/> 
+<img src="https://github.com/tmdwlsla123/Notification/assets/63600525/a326706c-9dcd-4b44-ba36-045eb6c80130"  width="200" height="400"/> 
+
 
